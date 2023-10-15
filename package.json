@@ -1,0 +1,42 @@
+{
+  "name": "drizzleexpress-api",
+  "version": "1.0.0",
+  "description": "Rest API for CRUD operation, user authentication and authorization.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./dist/src/index.js",
+    "dev": "nodemon -L -e ts --exec \"npm run build && npm start\"",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PetarIvanov01/DrizzleExpress-API.git"
+  },
+  "author": "Petar Ivanov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PetarIvanov01/DrizzleExpress-API/issues"
+  },
+  "homepage": "https://github.com/PetarIvanov01/DrizzleExpress-API#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.28.6",
+    "express": "^4.18.2",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.3",
+    "@types/cookie-parser": "^1.4.4",
+    "@types/cors": "^2.8.14",
+    "@types/express": "^4.17.19",
+    "@types/node": "^20.8.6",
+    "@types/pg": "^8.10.5",
+    "drizzle-kit": "^0.19.13",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}
