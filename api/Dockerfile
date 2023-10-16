@@ -1,6 +1,6 @@
 FROM node:16.13.1-alpine3.14
 
-WORKDIR /src/index
+WORKDIR /usr/src/index
 
 COPY ["package.json", "package-lock.json", "tsconfig.json", ".env", "./"]
 

@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node ./dist/src/index.js",
     "dev": "nodemon -L -e ts --exec \"npm run build && npm start\"",
+    "migration:generate": "drizzle-kit generate:pg --schema=./src/db/schema.ts",
+    "migration:push": "node -r esbuild-register src/db/migrate.ts",
     "build": "tsc"
   },
   "repository": {
