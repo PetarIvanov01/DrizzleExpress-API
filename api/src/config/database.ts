@@ -1,7 +1,6 @@
-import { drizzle } from "drizzle-orm/node-postgres"
 import { Client } from "pg";
 
-const client = new Client({
+export const client = new Client({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     database: process.env.DB_NAME,
@@ -21,5 +20,3 @@ const connectToDB = async () => {
     }
 };
 connectToDB();
-
-export const db = drizzle(client);
