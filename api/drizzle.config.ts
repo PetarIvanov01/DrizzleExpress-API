@@ -1,6 +1,7 @@
 import type { Config } from "drizzle-kit"
 
 export default {
-    schema: "./src/db/schema.ts",
-    out: "./.drizzle/migrations"
+    schema: "./src/db/schemas/*",
+    out: "./.drizzle/migrations",
+    driver:'pg'
 } satisfies Config

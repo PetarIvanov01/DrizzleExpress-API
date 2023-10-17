@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node ./dist/src/index.js",
     "dev": "nodemon -L -e ts --exec \"npm run build && npm start\"",
-    "migration:generate": "drizzle-kit generate:pg --schema=./src/db/schema.ts",
-    "migration:push": "node -r esbuild-register src/db/migrate.ts",
+    "migration:generate": "drizzle-kit generate:pg --schema=./src/db/schemas/*",
+    "migration:push": "node -r esbuild-register src/db/migrations.ts",
     "build": "tsc"
   },
   "repository": {
@@ -21,19 +21,23 @@
   },
   "homepage": "https://github.com/PetarIvanov01/DrizzleExpress-API#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.28.6",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/body-parser": "^1.19.3",
     "@types/cookie-parser": "^1.4.4",
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.19",
+    "@types/jsonwebtoken": "^9.0.3",
     "@types/node": "^20.8.6",
     "@types/pg": "^8.10.5",
     "drizzle-kit": "^0.19.13",
