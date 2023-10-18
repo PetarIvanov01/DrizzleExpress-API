@@ -1,8 +1,11 @@
-export default function withTryCatch(func: Function) {
+import { NextFunction, Request, RequestHandler, Response } from "express";
+
+const wrapController = (controller: RequestHandler) => async (req: Request, res: Response, next: NextFunction) => {
     try {
-        return func;
+        await controller(req, res, next);
     } catch (error) {
-        console.error(error);
-        throw error;
+        return next(error);
     }
 }
+
+export default wrapController
