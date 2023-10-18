@@ -1,19 +1,36 @@
 import { Request, Response } from "express";
+import { UserLoginData, UserRegisterData } from "../../interface/user.interface";
+import wrapController from "../helpers/wrapperTryCatch";
+import loginService from "../services/userLogin";
+import regService from "../services/userRegister";
 
-export const loginController = (req: Request, res: Response) => {
+export const loginController = wrapController(async (req: Request, res: Response) => {
 
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
+    const extractedData: UserLoginData = {
+        email,
+        password
+    };
 
+    await loginService(extractedData);
 
+    res.status(200)
+        .send({ message: "You are logged" });
+})
 
-    return;
-}
+export const registerController = wrapController(async (req: Request, res: Response) => {
 
-export const registerController = (req: Request, res: Response) => {
+    const { email, password, username } = req.body;
 
-    const { username, password, rePassword } = req.body;
+    const extractedData: UserRegisterData = {
+        email,
+        password,
+        username
+    };
 
+    await regService(extractedData);
 
-    return;
-}
+    res.status(201)
+        .send({ message: "You are registered" });
+})
