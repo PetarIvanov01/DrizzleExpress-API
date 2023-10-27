@@ -27,10 +27,10 @@ const loginService = async (userData: UserLoginData) => {
 
         return { username: user.username, token };
 
-    } catch (error) {
+    } catch (error: any) {
         throw {
             message: 'Login request faild',
-            error
+            error: { ...error, message: error.message }
         }
     }
 

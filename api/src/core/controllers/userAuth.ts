@@ -16,7 +16,7 @@ export const loginController = wrapController(async (req: Request, res: Response
     const token = await loginService(extractedData);
 
     res.status(200)
-        .send({ message: "You are logged", user: token });
+        .send({ message: "You are logged", token });
 })
 
 export const registerController = wrapController(async (req: Request, res: Response) => {
@@ -32,5 +32,5 @@ export const registerController = wrapController(async (req: Request, res: Respo
     const token = await regService(extractedData);
 
     res.status(201)
-        .send({ message: "You are registered", user: token });
+        .send({ message: "You are registered", token });
 })

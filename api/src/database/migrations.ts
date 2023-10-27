@@ -4,7 +4,7 @@ import { drizzle } from "drizzle-orm/node-postgres"
 import { migrate } from "drizzle-orm/node-postgres/migrator"
 
 const client = new Client({
-    connectionString: 'postgres://postgres:password@localhost:5432/db_name'
+    connectionString: `postgres://postgres:password@localhost:5432/${process.env.DB_NAME}`
 });
 
 const doMigrate = async () => {
