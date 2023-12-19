@@ -13,10 +13,10 @@ export const loginController = wrapController(async (req: Request, res: Response
         password
     };
 
-    const token = await loginService(extractedData);
+    const payload = await loginService(extractedData);
 
     res.status(200)
-        .send({ message: "You are logged", token });
+        .send({ message: "You are logged", payload });
 })
 
 export const registerController = wrapController(async (req: Request, res: Response) => {
@@ -29,8 +29,8 @@ export const registerController = wrapController(async (req: Request, res: Respo
         username
     };
 
-    const token = await regService(extractedData);
+    const payload = await regService(extractedData);
 
     res.status(201)
-        .send({ message: "You are registered", token });
+        .send({ message: "You are registered", payload });
 })
