@@ -1,38 +1,21 @@
-import { serial, varchar, pgTable, integer, primaryKey, timestamp } from "drizzle-orm/pg-core"
+import { serial, varchar, pgTable, timestamp, integer } from "drizzle-orm/pg-core"
 
-export const usserAcc = pgTable('user_accounts', {
-    userId: serial('user_id').primaryKey(),
+export const users = pgTable('users', {
+    id: serial('id').primaryKey(),
     email: varchar('email', { length: 150 }).notNull(),
-    username: varchar('name', { length: 150 }).notNull(),
     password: varchar('password', { length: 150 }).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true }).default(new Date()).notNull()
 });
 
-export const game = pgTable('game', {
-    gameId: serial('game_id').primaryKey(),
-    category: varchar('category', { length: 20 }).notNull()
+export const users_info = pgTable('users_info', {
+    user_id: integer('id').references(() => users.id),
+    full_name: varchar('full_name', { length: 50 }).notNull(),
+    phone_number: varchar('phone_number', { length: 20 })
 });
 
-export const level = pgTable('level', {
-    levelId: serial('level_id').primaryKey(),
-    name: varchar('name', { length: 20 }).notNull(),
-    gameId: integer('game_id').references(() => usserAcc.userId),
-});
-
-export const userGame = pgTable('user_game', {
-    userId: integer('user_id').references(() => usserAcc.userId),
-    gameId: integer('game_id').references(() => game.gameId),
-    levelId: integer('level_id').references(() => level.levelId),
-    totalAnswers: integer('total_answers').notNull(),
-    correctAnswers: integer('correct_answers').notNull(),
-}, (table) => {
-    return {
-        pk: primaryKey(table.userId, table.gameId, table.levelId)
-    }
-});
-
-// export const gameSessions = pgTable('game_sessions', {
-//     id: serial('id').primaryKey(),
-//     userId: integer('user_id').references(() => usserAcc.userId),
-//     gameId: integer('game_id').references(() => game.gameId)
-//   });
+// export const session = pgTable('user_session', {
+//     sessionId: serial('sessionId').primaryKey(),
+//     email: varchar('email', { length: 150 }).notNull(),
+//     createdAt: timestamp("created_at", { withTimezone: true }).default(new Date()).notNull(),
+//     valid: boolean('valid').notNull(),
+// });
