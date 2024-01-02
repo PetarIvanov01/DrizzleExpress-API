@@ -1,10 +1,10 @@
 import { drizzle } from "drizzle-orm/node-postgres";
+import { Client } from "pg";
 import * as user_schemas from "../database/schemas/schema_user";
 import * as product_shemas from "../database/schemas/schema_products";
-import { Client } from "pg";
 
 export const client = new Client({
-    host: process.env.DB_HOST,
+    host: process.env.NODE_ENV === "production"  ? process.env.DB_HOST :  "localhost",
     user: process.env.DB_USER,
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
@@ -13,6 +13,7 @@ export const client = new Client({
 
 const connectToDB = async () => {
     try {
+
         await client.connect();
         console.log('DB connected');
 
