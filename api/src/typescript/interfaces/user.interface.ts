@@ -1,3 +1,5 @@
+import { Request } from "express";
+
 export interface UserLoginData {
     email: string,
     password: string,
@@ -9,3 +11,6 @@ export interface UserRegisterData {
     username: string,
 }
 
+export interface RequestUserProp extends Request {
+    user?: any
+}
