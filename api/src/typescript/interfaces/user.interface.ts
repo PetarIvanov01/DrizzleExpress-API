@@ -11,6 +11,11 @@ export interface UserRegisterData {
     username: string,
 }
 
+export interface AuthToken {
+    id: string,
+    email: string
+}
+
 export interface RequestUserProp extends Request {
-    user?: any
+    user?: AuthToken
 }
