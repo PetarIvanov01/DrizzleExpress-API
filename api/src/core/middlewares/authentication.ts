@@ -1,22 +1,25 @@
-import { Request, Response, NextFunction } from "express"
-import { verifyToken } from "../helpers/authUtil";
+import { Response, NextFunction } from "express"
+import { RequestUserProp } from "../../typescript/interfaces/user.interface";
+import { verifyJWT } from "../helpers/jwt.utils";
 
-export default function authChecker(req: Request, res: Response, next: NextFunction) {
+export default function authChecker(req: RequestUserProp, res: Response, next: NextFunction) {
 
     try {
 
-        const header = req.headers.authorization;
-        const tokenString = header?.split(' ')[1];
+        const accessToken = req.headers.authorization?.split('Bearer')[1].trim();
 
-        let isToken;
-        if (typeof tokenString === 'string') {
-            isToken = verifyToken(tokenString);
+        if (!accessToken) throw new Error('No access token provided!');
+
+        const payload = verifyJWT(accessToken);
+
+        req.user = {
+            id: payload.id,
+            email: payload.email
         }
-        console.log(isToken);
 
-        next();
+        return next();
 
     } catch (error) {
-        res.send({ error })
+        next(error)
     }
-}
+};
