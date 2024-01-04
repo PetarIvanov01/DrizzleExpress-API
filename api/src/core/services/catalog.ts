@@ -1,7 +1,8 @@
-import { db } from "../../config/database"
-import { products } from "../../database/schemas/schema_products"
-import IFile from "../../interface/multer.interface";
-
+import { eq, sql } from "drizzle-orm";
+import { db } from "../../config/database";
+import { categories, products } from "../../database/schemas/schema_products";
+import IFile from "../../typescript/interfaces/multer.interface";
+import { SearchQuery } from "../../typescript/types/query.type";
 type NewProduct = typeof products.$inferInsert;
 
 export const insertCatalogData = async (data: NewProduct, file: IFile) => {
@@ -21,10 +22,24 @@ export const insertCatalogData = async (data: NewProduct, file: IFile) => {
     };
 };
 
-export const getCatalogData = async () => {
+//Todo set the proper interface for the query
+export const getCatalogData = async (search: SearchQuery) => {
     try {
-        return await db.query.products.findMany();
+
+        if (Object.keys(search).length === 0) {
+            return db.query.products.findMany();
+        }
+
+        const data = await db.select({
+            products
+        })
+            .from(categories)
+            .where(sql`${categories.type} = ${search.category}`)
+            .innerJoin(products, eq(categories.category_id, products.category_id));
+
+        return data.map(({ products }) => ({ ...products }));
+
     } catch (error) {
         throw error
-    };
+    }
 };
