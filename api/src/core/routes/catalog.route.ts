@@ -3,6 +3,8 @@ import multer from "multer";
 import path from "path";
 
 import { getCatalogController, insertCatalogController } from "../controllers/catalog";
+import querryMiddlware from "../middlewares/extractQuerry";
+import authChecker from "../middlewares/authentication";
 
 const storage = multer.diskStorage({
     destination(req, file, callback) {
@@ -16,5 +18,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 export const catalogRoute = Router();
-catalogRoute.post('/', upload.single('image'), insertCatalogController);
-catalogRoute.get('/', getCatalogController)
+
+catalogRoute.post('/', upload.single('image'), authChecker, insertCatalogController);
+catalogRoute.get('/',
+    querryMiddlware,
+    getCatalogController);
