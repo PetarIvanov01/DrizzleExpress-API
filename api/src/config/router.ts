@@ -1,10 +1,10 @@
 import { Express } from "express"
-import { userAuthRoute } from "../core/routes/userAuth"
 
+import userAuthRoute from "../core/routes/userAuth"
+import catalogRoute from "../core/routes/catalog.route";
 import errorHandler from "../core/middlewares/errorHandler";
-import { catalogRoute } from "../core/routes/catalog";
 
-const START_POINT_VERSION = '/api/v1'
+const START_POINT_VERSION = '/api/v1';
 
 export default function routerConfig(app: Express) {
 
