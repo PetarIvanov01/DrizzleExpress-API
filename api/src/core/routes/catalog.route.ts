@@ -1,25 +1,22 @@
-import { Router, } from "express";
-import multer from "multer";
-import path from "path";
+import { Router } from "express";
 
-import { getCatalogController, insertCatalogController } from "../controllers/catalog";
+import {
+    deleteItemFromCatalog,
+    getCatalogController,
+    insertCatalogController
+} from "../controllers/catalog";
+
 import querryMiddlware from "../middlewares/extractQuerry";
 import authChecker from "../middlewares/authentication";
+import fileExtractionMiddlawere from "../middlewares/fileExtraction";
 
-const storage = multer.diskStorage({
-    destination(req, file, callback) {
-        const destinationPath = path.resolve(__dirname, '../../../public/uploads');
-        callback(null, destinationPath)
-    },
-    filename(req, file, callback) {
-        callback(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
-    },
-});
-const upload = multer({ storage: storage });
+const catalogRoute = Router();
 
-export const catalogRoute = Router();
-
-catalogRoute.post('/', upload.single('image'), authChecker, insertCatalogController);
+catalogRoute.post('/', authChecker, fileExtractionMiddlawere('image'), insertCatalogController);
 catalogRoute.get('/',
     querryMiddlware,
     getCatalogController);
+
+catalogRoute.delete(`/`, authChecker, deleteItemFromCatalog);
+
+export default catalogRoute;
