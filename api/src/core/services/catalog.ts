@@ -1,45 +1,90 @@
-import { eq, sql } from "drizzle-orm";
-import { db } from "../../config/database";
-import { categories, products } from "../../database/schemas/schema_products";
-import IFile from "../../typescript/interfaces/multer.interface";
-import { SearchQuery } from "../../typescript/types/query.type";
+import { SQLWrapper, and, asc, desc, eq, gte, lte, sql } from 'drizzle-orm';
+
+import { SearchQuery } from '../../typescript/interfaces/query.interface';
+import IFile from '../../typescript/interfaces/multer.interface';
+
+import { db } from '../../config/database';
+import { categories, products } from '../../database/schemas/schema_products';
 type NewProduct = typeof products.$inferInsert;
 
 export const insertCatalogData = async (data: NewProduct, file: IFile) => {
-
     try {
-        const createdData = await db.insert(products).values({
-            category_id: data.category_id,
-            description: data.description,
-            price: data.price,
-            title: data.title,
-            image: file.filename
-        }).returning();
+        const createdData = await db
+            .insert(products)
+            .values({
+                category_id: data.category_id,
+                description: data.description,
+                price: data.price,
+                title: data.title,
+                image: file.filename,
+            })
+            .returning();
         return createdData;
-
     } catch (error) {
         throw error;
-    };
+    }
 };
 
 //Todo set the proper interface for the query
 export const getCatalogData = async (search: SearchQuery) => {
     try {
-
         if (Object.keys(search).length === 0) {
             return db.query.products.findMany();
         }
+        const table1Conditions: SQLWrapper[] = [];
 
-        const data = await db.select({
-            products
-        })
+        let queryBuilder = db
+            .select({
+                product_id: products.product_id,
+                categoriy_id: products.category_id,
+                title: products.title,
+                price: products.price,
+                description: products.description,
+                imag: products.image,
+                type: categories.type,
+            })
             .from(categories)
-            .where(sql`${categories.type} = ${search.category}`)
-            .innerJoin(products, eq(categories.category_id, products.category_id));
+            .innerJoin(
+                products,
+                eq(categories.category_id, products.category_id)
+            );
 
-        return data.map(({ products }) => ({ ...products }));
+        if (search.category) {
+            table1Conditions.push(sql`${categories.type} = ${search.category}`);
+        }
 
+        if (search.price?.from) {
+            //@ts-ignore
+            table1Conditions.push(gte(products.price, search.price.from));
+        }
+
+        if (search.price?.to) {
+            //@ts-ignore
+            table1Conditions.push(lte(products.price, search.price.to));
+        }
+
+        if (search.sort) {
+            const orderdByFunc = search.sort === 'asc' ? asc : desc;
+            queryBuilder.orderBy(orderdByFunc(products.title));
+        }
+
+        const data = await queryBuilder.where(and(...table1Conditions));
+        return data.map((products) => ({ ...products }));
     } catch (error) {
-        throw error
+        throw error;
+    }
+};
+
+export const getProductId = async (itemId: number) => {
+    try {
+        const item = await db.query.products.findFirst({
+            where({ product_id }, { eq }) {
+                return eq(product_id, itemId);
+            },
+        });
+
+        return item;
+    } catch (error) {
+        throw error;
     }
 };
