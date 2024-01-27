@@ -1,7 +1,12 @@
-export type CategoryQueriesType = 'cardio' | 'free-weights' | 'machines';
-export type RatingQueriesType = 1 | 2 | 3 | 4 | 5;
+import { WORKING_QUERIES } from "../../core/utils/_constants";
 
-export type SearchQuery = {
-    category?: CategoryQueriesType,
-    rating?: RatingQueriesType
+export type CategoryQueriesType = "cardio" | "free-weights" | "machines";
+export type SortType = "asc" | "desc";
+export type PriceType = {
+  from?: number;
+  to?: number;
+};
+
+export type DefinedQueriesType = {
+  [Key in (typeof WORKING_QUERIES)[number]]?: string;
 };
