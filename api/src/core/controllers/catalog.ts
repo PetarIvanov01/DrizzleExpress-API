@@ -1,8 +1,13 @@
-import { Response, Request } from "express";
-import { RequestWithQueryData } from "../middlewares/extractQuerry";
-import IFile from "../../typescript/interfaces/multer.interface";
+import { Response, Request } from 'express';
+import IFile from '../../typescript/interfaces/multer.interface';
 
-import { getCatalogData, insertCatalogData } from "../services/catalog";
+import {
+    getCatalogData,
+    getProductId,
+    insertCatalogData,
+} from '../services/catalog';
+import { _deleteData } from '../services/userService/user.queries';
+import { RequestWithQueryData } from '../../typescript/interfaces/query.interface';
 
 export const insertCatalogController = async (req: Request, res: Response) => {
     try {
@@ -12,25 +17,51 @@ export const insertCatalogController = async (req: Request, res: Response) => {
         const result = await insertCatalogData(data, file);
 
         res.json({
-            result
+            result,
         });
-
     } catch (error) {
         throw error;
-    };
+    }
 };
 
-export const getCatalogController = async (req: RequestWithQueryData, res: Response) => {
+export const getCatalogController = async (
+    req: RequestWithQueryData,
+    res: Response
+) => {
     try {
         let searchBy = req.searchBy || {};
-
+        console.log(searchBy);
         const values = await getCatalogData(searchBy);
 
         res.json({
-            values
+            values,
         });
-
-    } catch (error: unknown) {
+    } catch (error) {
         throw error;
-    };
+    }
+};
+
+export const deleteItemFromCatalog = async (req: Request, res: Response) => {
+    try {
+        _deleteData();
+
+        res.json({
+            message: 'Delete',
+        });
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getProductByIdController = async (req: Request, res: Response) => {
+    try {
+        const productId = req.params.itemId;
+        if (!productId) return res.status(201).send();
+
+        const product = await getProductId(Number(productId));
+
+        res.send(product);
+    } catch (error) {
+        throw error;
+    }
 };
