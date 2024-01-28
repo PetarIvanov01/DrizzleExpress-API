@@ -64,12 +64,11 @@ export const createUser = async (userValues: UserRegisterData) => {
                     .insert(users)
                     .values(userValues)
                     .returning({ id: users.id });
-                const id = user[0].id;
+                const user_id = user[0].id;
 
-                // @ts-ignore
-                await tx.insert(users_info).values({ id, ...otherInfo });
+                await tx.insert(users_info).values({ user_id, ...otherInfo });
 
-                return id;
+                return user_id;
             } catch (error) {
                 tx.rollback();
                 throw error;
