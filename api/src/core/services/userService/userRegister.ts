@@ -1,21 +1,23 @@
-import bcryptjs from "bcryptjs"
+import bcryptjs from 'bcryptjs';
 
-import { UserRegisterData } from "../../../typescript/interfaces/user.interface";
-import { validateAuth, validateRegisterOtherInfo } from "../../validations/validateAuth";
-import { signJWT } from "../../helpers/jwt.utils";
-import { createUser } from "./user.queries";
-import { ValidationError } from "../../utils/Errors";
+import { UserRegisterData } from '../../../typescript/interfaces/user.interface';
+import {
+    validateAuth,
+    validateRegisterOtherInfo,
+} from '../../validations/validateAuth';
+import { signJWT } from '../../helpers/jwt.utils';
+import { createUser } from './user.queries';
+import { ValidationError } from '../../utils/Errors';
 
-//Todo abstract the catch block  
+//Todo abstract the catch block
 
 const regService = async (userData: UserRegisterData) => {
-
     const errors = [
         validateAuth({
             email: userData.email,
-            password: userData.password
+            password: userData.password,
         }),
-        validateRegisterOtherInfo(userData.otherInfo)
+        validateRegisterOtherInfo(userData.otherInfo),
     ];
 
     try {
@@ -25,17 +27,22 @@ const regService = async (userData: UserRegisterData) => {
 
         const userValues = {
             email,
-            password: await bcryptjs.hash(password, 10)
+            password: await bcryptjs.hash(password, 10),
         };
 
-        const payload = await createUser({ ...userValues, otherInfo: { ...userData.otherInfo } });
+        const payload = await createUser({
+            ...userValues,
+            otherInfo: { ...userData.otherInfo },
+        });
 
         const token = signJWT(payload, '6h');
 
         return { ...payload, token };
-
     } catch (error: any) {
-        throw new ValidationError('Register request faild', { ...error, message: error.message });
+        throw new ValidationError('Register request faild', {
+            ...error,
+            message: error.message,
+        });
     }
 };
 export default regService;
