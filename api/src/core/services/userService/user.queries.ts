@@ -83,13 +83,3 @@ export const createUser = async (userValues: UserRegisterData) => {
         throw error;
     }
 };
-
-//Testing purposes
-export const _deleteData = async (): Promise<void> => {
-    try {
-        await db.delete(products);
-        console.log('Successful deletion');
-    } catch (error) {
-        console.log(error);
-    }
-};
