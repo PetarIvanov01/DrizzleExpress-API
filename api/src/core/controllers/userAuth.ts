@@ -1,52 +1,55 @@
-import { Request, Response } from "express";
-import { UserLoginData, UserRegisterData } from "../../typescript/interfaces/user.interface";
-import wrapController from "../helpers/wrapperTryCatch";
+import { Request, Response } from 'express';
+import {
+    UserLoginData,
+    UserRegisterData,
+} from '../../typescript/interfaces/user.interface';
+import wrapController from '../helpers/wrapperTryCatch';
 
-import { getUserById } from "../services/userService/user.queries";
-import loginService from "../services/userService/userLogin";
-import regService from "../services/userService/userRegister";
+import { getUserById } from '../services/userService/user.queries';
+import loginService from '../services/userService/userLogin';
+import regService from '../services/userService/userRegister';
 
-export const loginController = wrapController(async (req: Request, res: Response) => {
+export const loginController = wrapController(
+    async (req: Request, res: Response) => {
+        const { email, password } = req.body;
+        const extractedData: UserLoginData = {
+            email,
+            password,
+        };
 
-    const { email, password } = req.body;
-    const extractedData: UserLoginData = {
-        email,
-        password
-    };
+        const payload = await loginService(extractedData);
 
-    const payload = await loginService(extractedData);
+        res.status(200).json({ message: 'You are logged', payload });
+    }
+);
 
-    res.status(200)
-        .json({ message: "You are logged", payload });
-});
+export const registerController = wrapController(
+    async (req: Request, res: Response) => {
+        const { email, password } = req.body;
+        const otherInfo = {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            phoneNumber: req.body.phoneNumber,
+        };
 
-export const registerController = wrapController(async (req: Request, res: Response) => {
+        const extractedData: UserRegisterData = {
+            email,
+            password,
+            otherInfo,
+        };
 
-    const { email, password } = req.body;
-    const otherInfo = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        phoneNumber: req.body.phoneNumber
-    };
+        const payload = await regService(extractedData);
 
-    const extractedData: UserRegisterData = {
-        email,
-        password,
-        otherInfo
-    };
+        res.status(200).json({ message: 'You are registered', payload });
+    }
+);
 
-    const payload = await regService(extractedData);
+export const getCurrentUser = wrapController(
+    async (req: Request, res: Response) => {
+        const userId = req.query.userId as string;
 
-    res.status(200)
-        .json({ message: "You are registered", payload });
-});
+        const payload = await getUserById(userId);
 
-export const getCurrentUser = wrapController(async (req: Request, res: Response) => {
-
-    const { userId } = req.params;
-
-    const payload = await getUserById(userId);
-
-    res.status(200).
-        json({ message: "Current user", payload });
-});
+        res.status(200).json(payload);
+    }
+);
