@@ -1,0 +1,98 @@
+[
+    {
+        "product_id": 17,
+        "category_id": 1,
+        "title": "Orion SS9",
+        "price": 1245.23,
+        "description": "Orion SS9 LED Screen Semi-Pro Treadmill - Orion SS9 LED Screen Treadmill Speed Range: 1-16km/h Incline Range: 0-10 Motor: 2.",
+        "image": "image_1705421104320.jpg"
+    },
+    {
+        "product_id": 18,
+        "category_id": 1,
+        "title": "Active Gym Premium Line",
+        "price": 4545.23,
+        "description": "Treadmill with Touch Screen Active Gym Premium Line",
+        "image": "image_1705423378413.jpg"
+    },
+    {
+        "product_id": 19,
+        "category_id": 1,
+        "title": "Active Gym Curve",
+        "price": 3545.73,
+        "description": "The track is driven and adjusted by the exerciser. It quickly accelerates after starting and moves at the same speed as the athlete.",
+        "image": "image_1705423589050.png"
+    },
+    {
+        "product_id": 20,
+        "category_id": 1,
+        "title": "Upright Bike trainer",
+        "price": 2515.99,
+        "description": " Ideal for home or gym use, it offers a convenient option for cycling enthusiasts seeking an efficient indoor fitness solution.",
+        "image": "image_1705423820948.png"
+    },
+    {
+        "product_id": 21,
+        "category_id": 2,
+        "title": "Loaded Abdominal",
+        "price": 2200.00,
+        "description": "Elevate your core workouts with our Loaded Abdominal machine, a premium fitness solution designed for optimal strength and muscle development.",
+        "image": "image_1705424011172.png"
+    },
+    {
+        "product_id": 22,
+        "category_id": 2,
+        "title": "Combo AB Crunch/Back Row",
+        "price": 3520.00,
+        "description": "This compact and efficient fitness equipment allows you to target your abdominal muscles with effective crunches and switch seamlessly to strengthen your back with targeted rowing exercises, providing a comprehensive and space-saving solution for your home gym.",
+        "image": "image_1705424204122.png"
+    },
+    {
+        "product_id": 23,
+        "category_id": 2,
+        "title": "Loaded Decline Chest Press",
+        "price": 2550.00,
+        "description": "Designed for maximum effectiveness, this fitness equipment allows you to add resistance, ensuring a challenging and targeted workout for enhanced chest muscle development. Experience a new level of strength training with our premium Loaded Decline Chest Press.",
+        "image": "image_1705424261186.png"
+    },
+    {
+        "product_id": 24,
+        "category_id": 2,
+        "title": "Loaded Bench Press",
+        "price": 1520.00,
+        "description": "Achieve superior strength gains with our Loaded Bench Press machine. This premium fitness equipment offers an adjustable and robust platform for a challenging chest workout, allowing users to add resistance and optimize muscle engagement.",
+        "image": "image_1705424341736.png"
+    },
+    {
+        "product_id": 25,
+        "category_id": 3,
+        "title": "Eleiko XF Set of dumbbells 22 kg",
+        "price": 720.00,
+        "description": "Upgrade your strength training regimen with the Eleiko XF Set of Dumbbells, including weights of 8, 16, and 22 kg. Crafted by Eleiko's renowned quality, these dumbbells provide a versatile and durable solution for a wide range of exercises, ensuring a premium lifting experience for your fitness journey.",
+        "image": "image_1705424505112.jpg"
+    },
+    {
+        "product_id": 26,
+        "category_id": 3,
+        "title": "Eleiko dumbbells Vulcano 9 kg",
+        "price": 220.00,
+        "description": "Elevate your strength training with the Eleiko Vulcano 9 kg Dumbbells. Meticulously crafted for durability and performance, these premium dumbbells offer a versatile solution for targeted workouts, providing a reliable and ergonomic design to enhance your fitness routine.",
+        "image": "image_1705424585252.jpg"
+    },
+    {
+        "product_id": 27,
+        "category_id": 3,
+        "title": "Eleiko IWF Weightlifting Training Plate 20kg",
+        "price": 420.00,
+        "description": "Experience top-tier performance with the Eleiko IWF Weightlifting Training Plate, designed for professional-grade weightlifting. This 20kg training plate is meticulously crafted to International Weightlifting Federation (IWF) standards, ensuring precision and durability for your training needs.",
+        "image": "image_1705424683558.jpg"
+    },
+    {
+        "product_id": 28,
+        "category_id": 3,
+        "title": "Eleiko Powerlifting Competition Plate 25 kg",
+        "price": 650.00,
+        "description": "Enhance your powerlifting training with the Eleiko WPPO Powerlifting Competition Plate weighing 25 kg. Crafted to meet the standards of competitive powerlifting, this plate combines durability and accuracy to provide an exceptional lifting experience.",
+        "image": "image_1705424756900.jpg"
+    }
+]
