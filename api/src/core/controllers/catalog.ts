@@ -1,26 +1,34 @@
-import { Response, Request } from 'express';
-import IFile from '../../typescript/interfaces/multer.interface';
+import { Response, Request, NextFunction } from 'express';
 
 import {
-    _deleteData,
-    getCatalogData,
-    getProductId,
     insertCatalogData,
+    getProductId,
+    getCatalogData,
+    _deleteData,
 } from '../services/catalog';
+
 import { RequestWithQueryData } from '../../typescript/interfaces/query.interface';
 
-export const insertCatalogController = async (req: Request, res: Response) => {
+export const insertCatalogController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const data = req.body;
-        const file = req.file as IFile;
+        const file = req.file;
 
-        const result = await insertCatalogData(data, file);
+        if (!file) {
+            throw new Error('File is not provided');
+        }
+        //TODO Add body sanitizing
+        const result = insertCatalogData(data, file);
 
-        res.json({
+        res.status(200).json({
             result,
         });
     } catch (error) {
-        throw error;
+        next(error);
     }
 };
 

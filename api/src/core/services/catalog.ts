@@ -5,9 +5,9 @@ import IFile from '../../typescript/interfaces/multer.interface';
 
 import { db } from '../../config/database';
 import { categories, products } from '../../database/schemas/schema_products';
-type NewProduct = typeof products.$inferInsert;
+import { NewProductType } from '../../typescript/types/catalog.type';
 
-export const insertCatalogData = async (data: NewProduct, file: IFile) => {
+export const insertCatalogData = async (data: NewProductType, file: IFile) => {
     try {
         const createdData = await db
             .insert(products)
@@ -93,7 +93,7 @@ export const getProductId = async (itemId: number) => {
 };
 
 //Testing purposes
-export const _deleteData = async (): Promise<void> => {
+export const _deleteData = async () => {
     try {
         await db.delete(products);
         console.log('Successful deletion');
