@@ -1,12 +1,17 @@
-import { Response, NextFunction } from "express"
-import { RequestUserProp } from "../../typescript/interfaces/user.interface";
-import { verifyJWT } from "../helpers/jwt.utils";
+import { Response, NextFunction } from 'express';
+import { RequestUserProp } from '../../typescript/interfaces/user.interface';
+import { verifyJWT } from '../helpers/jwt.utils';
 
-export default function authChecker(req: RequestUserProp, res: Response, next: NextFunction) {
-
+// !Is not used anymore - Check the authJWT file
+export default function authChecker(
+    req: RequestUserProp,
+    res: Response,
+    next: NextFunction
+) {
     try {
-
-        const accessToken = req.headers.authorization?.split('Bearer')[1].trim();
+        const accessToken = req.headers.authorization
+            ?.split('Bearer')[1]
+            .trim();
 
         if (!accessToken) throw new Error('No access token provided!');
 
@@ -14,12 +19,11 @@ export default function authChecker(req: RequestUserProp, res: Response, next: N
 
         req.user = {
             id: payload.id,
-            email: payload.email
-        }
+            email: payload.email,
+        };
 
         return next();
-
     } catch (error) {
-        next(error)
+        next(error);
     }
-};
+}
