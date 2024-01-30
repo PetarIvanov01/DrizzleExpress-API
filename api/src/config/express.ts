@@ -3,6 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import bodyTrimmer from '../core/middlewares/trimBody';
+import { authJWT } from '../core/middlewares/authJWT';
 
 export default function expressConfig(app: Express) {
     app.use(cors({ credentials: true }));
@@ -13,4 +14,6 @@ export default function expressConfig(app: Express) {
     app.use(_static('public'));
 
     app.use(cookieParser());
+
+    app.use(authJWT());
 }
