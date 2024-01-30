@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ValidationError } from '../utils/Errors';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
+import { UnauthorizedError } from 'express-jwt';
 interface ErrorPayload {
     type: string;
     message: string;
@@ -24,7 +25,10 @@ const errorHandler = (
         errorPayload.message = 'Token is expired!';
         status = 400;
     } else if (error instanceof JsonWebTokenError) {
-        errorPayload.message = 'Ivalid Token!';
+        errorPayload.message = error.message ?? 'Ivalid Token!';
+        status = 400;
+    } else if (error instanceof UnauthorizedError) {
+        errorPayload.message = error.message;
         status = 400;
     } else if (error instanceof ValidationError) {
         errorPayload.message = error.message ?? 'Validation failed!';
