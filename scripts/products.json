@@ -1,6 +1,5 @@
 [
     {
-        "product_id": 17,
         "category_id": 1,
         "title": "Orion SS9",
         "price": 1245.23,
@@ -8,7 +7,6 @@
         "image": "image_1705421104320.jpg"
     },
     {
-        "product_id": 18,
         "category_id": 1,
         "title": "Active Gym Premium Line",
         "price": 4545.23,
@@ -16,7 +14,6 @@
         "image": "image_1705423378413.jpg"
     },
     {
-        "product_id": 19,
         "category_id": 1,
         "title": "Active Gym Curve",
         "price": 3545.73,
@@ -24,7 +21,6 @@
         "image": "image_1705423589050.png"
     },
     {
-        "product_id": 20,
         "category_id": 1,
         "title": "Upright Bike trainer",
         "price": 2515.99,
@@ -32,7 +28,6 @@
         "image": "image_1705423820948.png"
     },
     {
-        "product_id": 21,
         "category_id": 2,
         "title": "Loaded Abdominal",
         "price": 2200.00,
@@ -40,7 +35,6 @@
         "image": "image_1705424011172.png"
     },
     {
-        "product_id": 22,
         "category_id": 2,
         "title": "Combo AB Crunch/Back Row",
         "price": 3520.00,
@@ -48,7 +42,6 @@
         "image": "image_1705424204122.png"
     },
     {
-        "product_id": 23,
         "category_id": 2,
         "title": "Loaded Decline Chest Press",
         "price": 2550.00,
@@ -56,7 +49,6 @@
         "image": "image_1705424261186.png"
     },
     {
-        "product_id": 24,
         "category_id": 2,
         "title": "Loaded Bench Press",
         "price": 1520.00,
@@ -64,7 +56,6 @@
         "image": "image_1705424341736.png"
     },
     {
-        "product_id": 25,
         "category_id": 3,
         "title": "Eleiko XF Set of dumbbells 22 kg",
         "price": 720.00,
@@ -72,7 +63,6 @@
         "image": "image_1705424505112.jpg"
     },
     {
-        "product_id": 26,
         "category_id": 3,
         "title": "Eleiko dumbbells Vulcano 9 kg",
         "price": 220.00,
@@ -80,7 +70,6 @@
         "image": "image_1705424585252.jpg"
     },
     {
-        "product_id": 27,
         "category_id": 3,
         "title": "Eleiko IWF Weightlifting Training Plate 20kg",
         "price": 420.00,
@@ -88,7 +77,6 @@
         "image": "image_1705424683558.jpg"
     },
     {
-        "product_id": 28,
         "category_id": 3,
         "title": "Eleiko Powerlifting Competition Plate 25 kg",
         "price": 650.00,
