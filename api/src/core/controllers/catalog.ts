@@ -53,7 +53,7 @@ export const getProductByIdController = async (req: Request, res: Response) => {
         const productId = req.params.itemId;
         if (!productId) return res.status(201).send();
 
-        const product = await getProductId(Number(productId));
+        const product = await getProductId(productId);
 
         res.send(product);
     } catch (error) {
