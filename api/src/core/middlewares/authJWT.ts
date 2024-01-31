@@ -18,6 +18,7 @@ export function authJWT() {
                 methods: ['POST'],
             },
             { url: '/api/v1/catalog', methods: ['GET'] },
+            { url: '/api/v1/cart', methods: ['POST'] },
         ],
     });
 }
