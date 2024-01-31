@@ -5,7 +5,7 @@ import {
     validateAuth,
     validateRegisterOtherInfo,
 } from '../../validations/validateAuth';
-import { signJWT } from '../../helpers/jwt.utils';
+import { signJWT, signJWT_Refresh } from '../../helpers/jwt.utils';
 import { createUser } from './user.queries';
 import { ValidationError } from '../../utils/Errors';
 
@@ -35,9 +35,13 @@ const regService = async (userData: UserRegisterData) => {
             otherInfo: { ...userData.otherInfo },
         });
 
-        const token = signJWT(payload, '6h');
+        const token = signJWT(payload);
+        const refreshToken = signJWT_Refresh(payload);
 
-        return { ...payload, token };
+        return {
+            payload: { ...payload, token },
+            refreshToken,
+        };
     } catch (error: any) {
         throw new ValidationError('Register request faild', {
             ...error,
