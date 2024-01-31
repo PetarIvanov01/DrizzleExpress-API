@@ -29,7 +29,7 @@ const loginService = async (userData: UserLoginData) => {
         const refreshToken = await signJWT_Refresh(payload);
 
         return {
-            payload: { ...payload, token, refreshToken },
+            payload: { ...payload, token },
             refreshToken,
         };
     } catch (error: any) {

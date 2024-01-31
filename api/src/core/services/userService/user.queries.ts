@@ -37,7 +37,7 @@ export const getUserById = async (userId: string) => {
             return await queryData;
         }
 
-        queryData.where(eq(users.id, parseInt(userId)));
+        queryData.where(eq(users.id, userId));
 
         return queryData;
     } catch (error) {

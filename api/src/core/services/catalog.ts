@@ -78,7 +78,7 @@ export const getCatalogData = async (search: SearchQuery) => {
     }
 };
 
-export const getProductId = async (itemId: number) => {
+export const getProductId = async (itemId: string) => {
     try {
         const item = await db.query.products.findFirst({
             where({ product_id }, { eq }) {
