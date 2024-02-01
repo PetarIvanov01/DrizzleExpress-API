@@ -50,7 +50,7 @@ export const getCatalogController = async (
 
 export const getProductByIdController = async (req: Request, res: Response) => {
     try {
-        const productId = req.params.itemId;
+        const productId = req.params.productId;
         if (!productId) return res.status(201).send();
 
         const product = await getProductId(productId);
