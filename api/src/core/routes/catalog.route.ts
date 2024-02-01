@@ -3,6 +3,7 @@ import { Router } from 'express';
 import {
     deleteItemFromCatalog,
     getCatalogController,
+    getProductByIdController,
     insertCatalogController,
 } from '../controllers/catalog';
 
@@ -19,7 +20,7 @@ catalogRoute.post(
     insertCatalogController
 );
 catalogRoute.get('/', querryMiddlware, getCatalogController);
-
+catalogRoute.get('/:productId', getProductByIdController);
 catalogRoute.delete(`/`, isAdmin, deleteItemFromCatalog);
 
 export default catalogRoute;
