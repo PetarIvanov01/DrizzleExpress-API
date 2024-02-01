@@ -6,7 +6,12 @@ import bodyTrimmer from '../core/middlewares/trimBody';
 import { authJWT } from '../core/middlewares/authJWT';
 
 export default function expressConfig(app: Express) {
-    app.use(cors({ credentials: true }));
+    app.use(
+        cors({
+            credentials: true,
+            origin: /^http:\/\/localhost:5173(?:\/.*)?$/,
+        })
+    );
     app.use(bodyParser.json());
     app.use(urlencoded({ extended: true }));
 
