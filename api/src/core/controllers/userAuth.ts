@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { CookieOptions, Request, Response } from 'express';
 import {
     UserLoginData,
     UserRegisterData,
@@ -15,6 +15,13 @@ import {
 } from '../helpers/jwt.utils';
 
 const oneWeekInMilliseconds = 1000 * 60 * 60 * 24 * 7;
+const COOKIE_NAME = 'jwt-refresh';
+const COOKIE_OPTIONS = {
+    httpOnly: true,
+    maxAge: oneWeekInMilliseconds,
+    sameSite: 'none',
+    secure: true,
+} as CookieOptions;
 
 export const loginController = wrapController(
     async (req: Request, res: Response) => {
@@ -26,10 +33,7 @@ export const loginController = wrapController(
 
         const { payload, refreshToken } = await loginService(extractedData);
 
-        res.cookie('jwt', refreshToken, {
-            httpOnly: true,
-            maxAge: oneWeekInMilliseconds,
-        });
+        res.cookie(COOKIE_NAME, refreshToken, COOKIE_OPTIONS);
 
         res.status(200).json({ message: 'You are logged', payload });
     }
@@ -52,12 +56,18 @@ export const registerController = wrapController(
 
         const { payload, refreshToken } = await regService(extractedData);
 
-        res.cookie('jwt', refreshToken, {
-            httpOnly: true,
-            maxAge: oneWeekInMilliseconds,
-        });
+        res.cookie(COOKIE_NAME, refreshToken, COOKIE_OPTIONS);
 
         res.status(200).json({ message: 'You are registered', payload });
+    }
+);
+
+export const logoutController = wrapController(
+    async (req: Request, res: Response) => {
+        //TODO implement blacklisting in memory;
+        res.clearCookie(COOKIE_NAME, COOKIE_OPTIONS).status(201).json({
+            message: 'Logout successful',
+        });
     }
 );
 
@@ -73,29 +83,28 @@ export const getCurrentUser = wrapController(
 
 export const refreshTokensController = wrapController(
     async (req: Request, res: Response) => {
-        const refreshToken = req.cookies.jwt;
-        if (!refreshToken) return res.status(401).send('Not authorized');
+        const refreshToken = req.cookies[COOKIE_NAME];
+
+        if (!refreshToken)
+            return res.status(401).json({ message: 'Not authorized' });
 
         try {
             const payload = verifyJWT_Refresh(refreshToken);
             const newAccesstoken = await signJWT(payload);
             const newRefreshToken = await signJWT_Refresh(payload);
 
-            res.cookie('jwt', newRefreshToken, {
-                httpOnly: true,
-                maxAge: oneWeekInMilliseconds,
-            });
+            res.cookie(COOKIE_NAME, newRefreshToken, COOKIE_OPTIONS);
 
-            res.status(200).send({
-                ...payload,
-                token: newAccesstoken,
+            res.status(200).json({
+                message: 'Tokens successfully refreshed.',
+                payload: { ...payload, token: newAccesstoken },
             });
         } catch (error) {
-            res.clearCookie('jwt', {
-                httpOnly: true,
-                maxAge: oneWeekInMilliseconds,
+            res.clearCookie(COOKIE_NAME, COOKIE_OPTIONS).status(401).json({
+                error: 'Expired Token',
+                message:
+                    'Refresh token expired. Please log in again to obtain new tokens.',
             });
-            throw error;
         }
     }
 );
