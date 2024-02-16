@@ -34,7 +34,7 @@ export const getCatalogData = async (search: SearchQuery) => {
 
         const category = search.category;
         const price = search.price;
-        const sort = search.sort;
+        const sort = search.sort_by;
 
         let queryBuilder = db
             .select({
