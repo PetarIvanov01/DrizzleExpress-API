@@ -1,74 +1,74 @@
-import { SearchQuery } from "../../typescript/interfaces/query.interface";
-import { DefinedQueriesType } from "../../typescript/types/query.type";
+import { SearchQuery } from '../../typescript/interfaces/query.interface';
+import { DefinedQueriesType } from '../../typescript/types/query.type';
 import {
-  CATEGORY_QUERIES,
-  SORT_OPTIONS,
-  WORKING_QUERIES,
-} from "../utils/_constants";
+    CATEGORY_QUERIES,
+    SORT_OPTIONS,
+    WORKING_QUERIES,
+} from '../utils/_constants';
 
 function isCategory(value: string): boolean {
-  return CATEGORY_QUERIES.some((r) => value === r);
+    return CATEGORY_QUERIES.some((r) => value === r);
 }
 
 function isSort(value: string): boolean {
-  return SORT_OPTIONS.some((r) => value === r);
+    return SORT_OPTIONS.some((r) => value === r);
 }
 
 function isValidNumber(value: string): boolean {
-  const number = Number(value);
-  if (isNaN(number)) {
-    return false;
-  }
-  if (number < 0) {
-    return false;
-  }
-  return true;
+    const number = Number(value);
+    if (isNaN(number)) {
+        return false;
+    }
+    if (number < 0) {
+        return false;
+    }
+    return true;
 }
 
 function sanytizePrice(object: SearchQuery) {
-  if (
-    object.price?.from &&
-    object.price?.to &&
-    object.price.from > object.price.to
-  ) {
-    object.price.from = 0;
-  }
+    if (
+        object.price?.from &&
+        object.price?.to &&
+        object.price.from > object.price.to
+    ) {
+        object.price.from = 0;
+    }
 }
 
 const PREDICATS = {
-  category: isCategory,
-  sort: isSort,
-  from: isValidNumber,
-  to: isValidNumber,
+    category: isCategory,
+    sort_by: isSort,
+    from: isValidNumber,
+    to: isValidNumber,
 };
 
 export function checkValidQueryParams(
-  queries: DefinedQueriesType
+    queries: DefinedQueriesType
 ): SearchQuery {
-  const result: SearchQuery = {};
+    const result: SearchQuery = {};
 
-  for (const q in queries) {
-    const key = q as (typeof WORKING_QUERIES)[number];
-    const predicateFunction = PREDICATS[key];
+    for (const q in queries) {
+        const key = q as (typeof WORKING_QUERIES)[number];
+        const predicateFunction = PREDICATS[key];
 
-    const value = queries[key];
-    if (!value) return {};
+        const value = queries[key];
+        if (!value) return {};
 
-    const statement = predicateFunction(value);
+        const statement = predicateFunction(value);
 
-    if (statement === true) {
-      if (key === "from" || key === "to") {
-        if (!result.price) {
-          result.price = {};
+        if (statement === true) {
+            if (key === 'from' || key === 'to') {
+                if (!result.price) {
+                    result.price = {};
+                }
+
+                result.price[key] = Number(queries[key]);
+                continue;
+            }
+            (result as any)[key] = queries[key];
         }
-
-        result.price[key] = Number(queries[key]);
-        continue;
-      }
-      (result as any)[key] = queries[key];
     }
-  }
 
-  sanytizePrice(result);
-  return result;
+    sanytizePrice(result);
+    return result;
 }
