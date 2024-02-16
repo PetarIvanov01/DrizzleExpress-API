@@ -3,7 +3,7 @@ import { CategoryQueriesType, PriceType, SortType } from '../types/query.type';
 
 export interface SearchQuery {
     category?: CategoryQueriesType;
-    sort?: SortType;
+    sort_by?: SortType;
     price?: PriceType;
 }
 

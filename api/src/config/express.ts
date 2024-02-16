@@ -9,6 +9,7 @@ export default function expressConfig(app: Express) {
     app.use(
         cors({
             credentials: true,
+            //Development only
             origin: /^http:\/\/localhost:5173(?:\/.*)?$/,
         })
     );
