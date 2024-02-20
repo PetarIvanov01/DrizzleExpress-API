@@ -3,9 +3,9 @@ import {
     getCurrentUser,
     loginController,
     logoutController,
-    refreshTokensController,
     registerController,
-} from '../controllers/userAuth';
+} from '../controllers/auth/authController';
+import { refreshTokensController } from '../controllers/auth/refreshTokenController';
 import isAdmin from '../middlewares/isAdmin';
 
 const userAuthRoute = Router();

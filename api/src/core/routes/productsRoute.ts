@@ -5,7 +5,7 @@ import {
     getCatalogController,
     getProductByIdController,
     insertCatalogController,
-} from '../controllers/catalog';
+} from '../controllers/products/productsController';
 
 import querryMiddlware from '../middlewares/extractQuerry';
 import fileExtractionMiddlawere from '../middlewares/fileExtraction';
