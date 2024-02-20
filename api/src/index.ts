@@ -3,7 +3,7 @@ import './config/database';
 import express from 'express';
 import expressConfig from './config/express';
 import routerConfig from './config/router';
-import notFoundController from './core/controllers/notFoundController';
+import notFoundController from './core/controllers/errors/notFoundController';
 
 main();
 async function main() {
