@@ -25,6 +25,28 @@ function isValidNumber(value: string): boolean {
     return true;
 }
 
+function isValidPage(value: string): boolean {
+    const number = Number(value);
+    if (isNaN(number)) {
+        return false;
+    }
+    if (number < 0) {
+        return false;
+    }
+    return true;
+}
+
+function isValidPerPage(value: string): boolean {
+    const number = Number(value);
+    if (isNaN(number)) {
+        return false;
+    }
+    if (number < 0) {
+        return false;
+    }
+    return true;
+}
+
 function sanytizePrice(object: SearchQuery) {
     if (
         object.price?.from &&
@@ -40,6 +62,8 @@ const PREDICATS = {
     sort_by: isSort,
     from: isValidNumber,
     to: isValidNumber,
+    page: isValidPage,
+    perPage: isValidPerPage,
 };
 
 export function checkValidQueryParams(
