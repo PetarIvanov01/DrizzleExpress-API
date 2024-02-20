@@ -26,15 +26,17 @@ export const insertCatalogData = async (data: NewProductType, file: IFile) => {
 };
 
 export const getCatalogData = async (search: SearchQuery) => {
+    const MAX_PERPAGE = 4;
     try {
-        if (Object.keys(search).length === 0) {
-            return db.query.products.findMany();
-        }
         const table1Conditions: SQLWrapper[] = [];
 
         const category = search.category;
         const price = search.price;
         const sort = search.sort_by;
+        const page = search.page || 1;
+        const perPage = search.perPage || MAX_PERPAGE;
+
+        const offset = (Number(page) - 1) * perPage;
 
         let queryBuilder = db
             .select({
@@ -71,8 +73,14 @@ export const getCatalogData = async (search: SearchQuery) => {
             queryBuilder.orderBy(orderdByFunc(products.title));
         }
 
-        const data = await queryBuilder.where(and(...table1Conditions));
-        return data.map((products) => ({ ...products }));
+        const copy = queryBuilder.where(and(...table1Conditions));
+        const length = (await copy).length;
+        const result = await queryBuilder.limit(Number(perPage)).offset(offset);
+
+        return {
+            itemsLng: length,
+            result: result.map((products) => ({ ...products })),
+        };
     } catch (error) {
         throw error;
     }
