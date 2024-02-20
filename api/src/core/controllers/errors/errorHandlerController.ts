@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { ValidationError } from '../utils/Errors';
+import { ValidationError } from '../../utils/Errors';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import { UnauthorizedError } from 'express-jwt';
 interface ErrorPayload {

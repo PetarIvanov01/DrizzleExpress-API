@@ -5,9 +5,9 @@ import {
     getProductId,
     getCatalogData,
     _deleteData,
-} from '../services/catalog';
+} from '../../services/catalog';
 
-import { RequestWithQueryData } from '../../typescript/interfaces/query.interface';
+import { RequestWithQueryData } from '../../../typescript/interfaces/query.interface';
 
 export const insertCatalogController = async (
     req: Request,
@@ -41,7 +41,8 @@ export const getCatalogController = async (
         const values = await getCatalogData(searchBy);
 
         res.json({
-            values,
+            itemsLng: values.itemsLng,
+            result: values.result,
         });
     } catch (error) {
         throw error;

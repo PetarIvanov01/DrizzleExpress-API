@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getCartDataService } from '../services/cart';
+import { getCartDataService } from '../../services/cart';
 
 export const getCartDataController = async (req: Request, res: Response) => {
     try {

@@ -2,26 +2,15 @@ import { CookieOptions, Request, Response } from 'express';
 import {
     UserLoginData,
     UserRegisterData,
-} from '../../typescript/interfaces/user.interface';
-import wrapController from '../helpers/wrapperTryCatch';
+} from '../../../typescript/interfaces/user.interface';
+import wrapController from '../../helpers/wrapperTryCatch';
 
-import { getUserById } from '../services/userService/user.queries';
-import loginService from '../services/userService/userLogin';
-import regService from '../services/userService/userRegister';
-import {
-    signJWT,
-    signJWT_Refresh,
-    verifyJWT_Refresh,
-} from '../helpers/jwt.utils';
+import { getUserById } from '../../services/userService/user.queries';
+import loginService from '../../services/userService/userLogin';
+import regService from '../../services/userService/userRegister';
 
-const oneWeekInMilliseconds = 1000 * 60 * 60 * 24 * 7;
-const COOKIE_NAME = 'jwt-refresh';
-const COOKIE_OPTIONS = {
-    httpOnly: true,
-    maxAge: oneWeekInMilliseconds,
-    sameSite: 'none',
-    secure: true,
-} as CookieOptions;
+import { ValidationError } from '../../utils/Errors';
+import { COOKIE_NAME, COOKIE_OPTIONS } from './_options';
 
 export const loginController = wrapController(
     async (req: Request, res: Response) => {
@@ -41,7 +30,14 @@ export const loginController = wrapController(
 
 export const registerController = wrapController(
     async (req: Request, res: Response) => {
-        const { email, password } = req.body;
+        const { email, password, rePassword } = req.body;
+
+        if (rePassword === undefined || password !== rePassword) {
+            throw new ValidationError('Register request faild', {
+                message: "Password doesn't matched!",
+            });
+        }
+
         const otherInfo = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
@@ -57,7 +53,6 @@ export const registerController = wrapController(
         const { payload, refreshToken } = await regService(extractedData);
 
         res.cookie(COOKIE_NAME, refreshToken, COOKIE_OPTIONS);
-
         res.status(200).json({ message: 'You are registered', payload });
     }
 );
@@ -78,33 +73,5 @@ export const getCurrentUser = wrapController(
         const payload = await getUserById(userId);
 
         res.status(200).json(payload);
-    }
-);
-
-export const refreshTokensController = wrapController(
-    async (req: Request, res: Response) => {
-        const refreshToken = req.cookies[COOKIE_NAME];
-
-        if (!refreshToken)
-            return res.status(401).json({ message: 'Not authorized' });
-
-        try {
-            const payload = verifyJWT_Refresh(refreshToken);
-            const newAccesstoken = await signJWT(payload);
-            const newRefreshToken = await signJWT_Refresh(payload);
-
-            res.cookie(COOKIE_NAME, newRefreshToken, COOKIE_OPTIONS);
-
-            res.status(200).json({
-                message: 'Tokens successfully refreshed.',
-                payload: { ...payload, token: newAccesstoken },
-            });
-        } catch (error) {
-            res.clearCookie(COOKIE_NAME, COOKIE_OPTIONS).status(401).json({
-                error: 'Expired Token',
-                message:
-                    'Refresh token expired. Please log in again to obtain new tokens.',
-            });
-        }
     }
 );
