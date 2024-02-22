@@ -3,9 +3,11 @@ import { getCartDataService } from '../../services/cart';
 
 export const getCartDataController = async (req: Request, res: Response) => {
     try {
-        const itemsId = req.body.ids;
+        const itemsId = req.cookies['cart-cookie'];
 
-        if (itemsId === undefined) return res.json([]);
+        if (typeof itemsId !== 'string') {
+            return res.json([]);
+        }
 
         const parsedIDs = JSON.parse(itemsId);
 
