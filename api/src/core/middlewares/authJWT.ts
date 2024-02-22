@@ -15,7 +15,7 @@ export function authJWT() {
         path: [
             { url: /\/api\/v1\/user(?:\/.*)?/, methods: ['POST'] },
             { url: /\/api\/v1\/catalog(?:\/.*)?/, methods: ['GET'] },
-            { url: '/api/v1/cart', methods: ['POST'] },
+            { url: '/api/v1/cart', methods: ['GET'] },
             { url: '/api/v1/refreshtoken', method: 'POST' },
         ],
     });
