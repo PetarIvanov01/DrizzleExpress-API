@@ -5,6 +5,7 @@ export const COOKIE_NAME = 'jwt-refresh';
 export const COOKIE_OPTIONS = {
     httpOnly: true,
     maxAge: oneWeekInMilliseconds,
-    sameSite: 'none',
+    path: '/api/v1/user/refreshtoken',
+    sameSite: 'strict',
     secure: true,
 } as CookieOptions;
