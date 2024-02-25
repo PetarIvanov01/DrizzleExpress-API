@@ -35,8 +35,8 @@ const regService = async (userData: UserRegisterData) => {
             otherInfo: { ...userData.otherInfo },
         });
 
-        const token = signJWT(payload);
-        const refreshToken = signJWT_Refresh(payload);
+        const token = await signJWT(payload);
+        const refreshToken = await signJWT_Refresh(payload);
 
         return {
             payload: { ...payload, token },
