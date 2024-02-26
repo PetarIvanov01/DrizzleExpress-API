@@ -79,7 +79,7 @@ export const getCatalogData = async (search: SearchQuery) => {
 
         return {
             itemsLng: length,
-            result: result.map((products) => ({ ...products })),
+            result: result.map((products) => ({ ...products, quantity: 1 })),
         };
     } catch (error) {
         throw error;
