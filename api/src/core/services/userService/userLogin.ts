@@ -15,14 +15,14 @@ const loginService = async (userData: UserLoginData) => {
 
         const user = await getUserByEmail(email);
 
-        if (user.id === undefined || user.password === undefined)
-            throw new Error('Email or password are incorrect!');
+        if (user === null) throw new Error('Email or password are incorrect!');
 
         await verifyPassword(password, user.password);
 
         const payload: Payload = {
             id: user.id,
-            email: user.email as string,
+            fullName: user.fullName,
+            email: user.email,
         };
 
         const token = await signJWT(payload);
