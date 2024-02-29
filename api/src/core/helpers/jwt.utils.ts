@@ -3,6 +3,7 @@ import jwt, { Secret } from 'jsonwebtoken';
 export interface Payload {
     id: string;
     email: string;
+    fullName: string;
 }
 
 const privateKey = process.env.JWT_SECRET as Secret;
@@ -14,7 +15,7 @@ export function signJWT(payload: Payload): Promise<string> {
             payload,
             privateKey,
             {
-                expiresIn: '1min',
+                expiresIn: '15min',
                 algorithm: 'HS256',
                 issuer: JSON.stringify(payload.id),
             },
@@ -57,6 +58,7 @@ export function verifyJWT(token: string): Payload {
         return {
             email: decoded.email,
             id: decoded.id,
+            fullName: decoded.fullName,
         };
     } catch (error: any) {
         throw new Error('Not authorozied!');
@@ -70,6 +72,7 @@ export function verifyJWT_Refresh(token: string): Payload {
         return {
             email: payload.email,
             id: payload.id,
+            fullName: payload.fullName,
         };
     } catch (error: any) {
         throw error;
