@@ -1,19 +1,48 @@
-import { users, users_info } from '../../../database/schemas/schema_user';
-import { products } from '../../../database/schemas/schema_products';
+import {
+    users,
+    users_info,
+    users_address,
+} from '../../../database/schemas/schema_user';
 import { db } from '../../../config/database';
 import { UserRegisterData } from '../../../typescript/interfaces/user.interface';
 import { eq } from 'drizzle-orm';
 
-export const getUserByEmail = async (email: string) => {
-    try {
-        const user = await db.query.users.findFirst({
-            where: (user, { eq }) => eq(user.email, email),
-        });
+interface UserReturnData {
+    id: string;
+    email: string;
+    fullName: string;
+    password: string;
+}
+interface UserUpdateDataTypes extends UserRegisterData {
+    city?: string;
+    address?: string;
+    country?: string;
+    zip?: number;
+}
 
+export const getUserByEmail = async (
+    email: string
+): Promise<UserReturnData | null> => {
+    try {
+        const user = await db
+            .select({
+                id: users.id,
+                email: users.email,
+                password: users.password,
+                full_name: users_info.full_name,
+            })
+            .from(users)
+            .innerJoin(users_info, eq(users.id, users_info.user_id))
+            .where(eq(users.email, email));
+
+        if (user[0] === undefined) {
+            return null;
+        }
         return {
-            id: user?.id,
-            email: user?.email,
-            password: user?.password,
+            id: user[0]?.id,
+            email: user[0]?.email,
+            fullName: user[0]?.full_name,
+            password: user[0]?.password,
         };
     } catch (error) {
         throw error;
@@ -22,24 +51,19 @@ export const getUserByEmail = async (email: string) => {
 
 export const getUserById = async (userId: string) => {
     try {
-        const queryData = db
+        const queryData = await db
             .select({
                 id: users.id,
                 email: users.email,
                 createdAt: users.createdAt,
-                full_name: users_info.full_name,
+                fullName: users_info.full_name,
                 phoneNumber: users_info.phone_number,
             })
             .from(users)
-            .innerJoin(users_info, eq(users_info.user_id, users.id));
+            .innerJoin(users_info, eq(users_info.user_id, users.id))
+            .where(eq(users.id, userId));
 
-        if (userId === undefined) {
-            return await queryData;
-        }
-
-        queryData.where(eq(users.id, userId));
-
-        return queryData;
+        return queryData[0];
     } catch (error) {
         throw error;
     }
@@ -49,7 +73,7 @@ export const createUser = async (userValues: UserRegisterData) => {
     try {
         const user = await getUserByEmail(userValues.email);
 
-        if (user.id) throw new Error('Email is taken');
+        if (user) throw new Error('Email is taken');
 
         const otherInfo = {
             full_name: userValues.otherInfo.firstName
@@ -77,8 +101,24 @@ export const createUser = async (userValues: UserRegisterData) => {
 
         return {
             email: userValues.email,
+            fullName: otherInfo.full_name,
             id: userId,
         };
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const updateUser = async (
+    userId: string,
+    userData: UserUpdateDataTypes
+) => {
+    try {
+        const user = await getUserById(userId);
+
+        if (user === null) {
+            throw new Error('User does not found!');
+        }
     } catch (error) {
         throw error;
     }
