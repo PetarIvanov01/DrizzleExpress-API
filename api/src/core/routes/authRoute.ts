@@ -1,16 +1,20 @@
 import { Router } from 'express';
 import {
-    getCurrentUser,
     loginController,
     logoutController,
     registerController,
 } from '../controllers/auth/authController';
 import { refreshTokensController } from '../controllers/auth/refreshTokenController';
 import isAdmin from '../middlewares/isAdmin';
+import {
+    getCurrentUser,
+    updateCurrentUser,
+} from '../controllers/auth/userProfileController';
 
 const userAuthRoute = Router();
 
-userAuthRoute.get('/', isAdmin, getCurrentUser);
+userAuthRoute.get('/:userId', isAdmin, getCurrentUser);
+userAuthRoute.put('/:userId', updateCurrentUser);
 
 userAuthRoute.post('/sign-in', loginController);
 userAuthRoute.post('/sign-up', registerController);
