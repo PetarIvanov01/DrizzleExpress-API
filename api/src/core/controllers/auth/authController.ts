@@ -1,4 +1,4 @@
-import { CookieOptions, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import {
     UserLoginData,
     UserRegisterData,
@@ -63,15 +63,5 @@ export const logoutController = wrapController(
         res.clearCookie(COOKIE_NAME, COOKIE_OPTIONS).status(201).json({
             message: 'Logout successful',
         });
-    }
-);
-
-export const getCurrentUser = wrapController(
-    async (req: Request, res: Response) => {
-        const userId = req.query.userId as string;
-
-        const payload = await getUserById(userId);
-
-        res.status(200).json(payload);
     }
 );
