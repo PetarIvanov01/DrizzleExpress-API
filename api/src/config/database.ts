@@ -2,6 +2,7 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
 import * as user_schemas from '../database/schemas/schema_user';
 import * as product_shemas from '../database/schemas/schema_products';
+import * as orders_schemas from '../database/schemas/schema_orders';
 
 export const client = new Client({
     host:
@@ -27,5 +28,5 @@ const connectToDB = async () => {
 connectToDB();
 
 export const db = drizzle(client, {
-    schema: { ...user_schemas, ...product_shemas },
+    schema: { ...user_schemas, ...product_shemas, ...orders_schemas },
 });
