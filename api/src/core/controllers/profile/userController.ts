@@ -1,10 +1,7 @@
 import { Request, Response } from 'express';
 import wrapController from '../../helpers/wrapperTryCatch';
-
-import {
-    getUserById,
-    updateUser,
-} from '../../services/userService/user.queries';
+import { getUserById } from '../../services/userService/getUser';
+import { updateUser } from '../../services/userService/userManagement';
 
 export const getCurrentUser = wrapController(
     async (req: Request, res: Response) => {
@@ -21,9 +18,10 @@ export const getCurrentUser = wrapController(
 export const updateCurrentUser = wrapController(
     async (req: Request, res: Response) => {
         const body = req.body;
+        const { userId } = req.params;
 
-        // await updateUser('dad',{});
+        const updatedFields = await updateUser(userId, body);
 
-        res.status(201).json({ message: 'Update user' });
+        res.status(201).json({ message: 'Update user', updatedFields });
     }
 );
