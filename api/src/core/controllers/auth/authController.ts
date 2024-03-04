@@ -5,7 +5,6 @@ import {
 } from '../../../typescript/interfaces/user.interface';
 import wrapController from '../../helpers/wrapperTryCatch';
 
-import { getUserById } from '../../services/userService/user.queries';
 import loginService from '../../services/userService/userLogin';
 import regService from '../../services/userService/userRegister';
 

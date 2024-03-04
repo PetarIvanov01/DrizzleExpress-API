@@ -2,8 +2,8 @@ import { compare } from 'bcryptjs';
 import { Payload, signJWT, signJWT_Refresh } from '../../helpers/jwt.utils';
 import { UserLoginData } from '../../../typescript/interfaces/user.interface';
 import { validateAuth } from '../../validations/validateAuth';
-import { getUserByEmail } from './user.queries';
 import { ValidationError } from '../../utils/Errors';
+import { getUserByEmail } from './getUser';
 
 const loginService = async (userData: UserLoginData) => {
     const errors = validateAuth(userData);

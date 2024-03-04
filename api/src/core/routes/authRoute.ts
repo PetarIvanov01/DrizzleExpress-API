@@ -9,7 +9,7 @@ import isAdmin from '../middlewares/isAdmin';
 import {
     getCurrentUser,
     updateCurrentUser,
-} from '../controllers/auth/userProfileController';
+} from '../controllers/profile/userController';
 
 const userAuthRoute = Router();
 

@@ -6,7 +6,7 @@ import {
     validateRegisterOtherInfo,
 } from '../../validations/validateAuth';
 import { signJWT, signJWT_Refresh } from '../../helpers/jwt.utils';
-import { createUser } from './user.queries';
+import { createUser } from './userManagement';
 import { ValidationError } from '../../utils/Errors';
 
 //Todo abstract the catch block
