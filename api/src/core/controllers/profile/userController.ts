@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import wrapController from '../../helpers/wrapperTryCatch';
-import { getUserById } from '../../services/userService/getUser';
+import { getUserProfileById } from '../../services/userService/getUser';
 import { updateUser } from '../../services/userService/userManagement';
 
 export const getCurrentUser = wrapController(
@@ -9,7 +9,7 @@ export const getCurrentUser = wrapController(
 
         if (userId === undefined) return res.status(204).end();
 
-        const payload = await getUserById(userId);
+        const payload = await getUserProfileById(userId);
 
         res.status(200).json(payload);
     }
