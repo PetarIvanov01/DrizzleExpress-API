@@ -9,17 +9,19 @@ import { getUserByEmail, getUserById } from './getUser';
 import { eq } from 'drizzle-orm';
 
 interface UserUpdateDataTypes {
-    firstName?: string;
-    lastName?: string;
-    phoneNumber?: string;
-    address?: {
+    shippingInfo?: {
         city?: string;
         address?: string;
         country?: string;
         postcode?: number;
     };
+    personalInfo?: {
+        firstName?: string;
+        lastName?: string;
+        phoneNumber?: string;
+    };
 }
-
+//Todo make one function that will receive different fields and will query by them
 export const createUser = async (userValues: UserRegisterData) => {
     try {
         const existingUser = await getUserByEmail(userValues.email);
@@ -76,29 +78,32 @@ export const updateUser = async (userId: string, body: UserUpdateDataTypes) => {
             throw new Error('User does not found!');
         }
 
-        const { address, ...userInfo } = body;
+        const { shippingInfo, personalInfo } = body;
 
-        const definedAddressFields = extractDefinedObj(address || {});
-        const definedUserInfoFields = extractDefinedObj(userInfo);
+        const definedAddressFields = extractDefinedObj(shippingInfo || {});
+        const definedUserInfoFields = extractDefinedObj(personalInfo || {});
 
         await db.transaction(async (tx) => {
             try {
-                if (address) {
+                if (Object.keys(definedAddressFields).length > 0) {
                     await tx
                         .update(user_address)
                         .set({
-                            ...address,
+                            address: definedAddressFields.address,
+                            city: definedAddressFields.city,
+                            country: definedAddressFields.country,
+                            postcode: definedAddressFields.postcode,
                         })
                         .where(eq(user_address.user_id, userId));
                 }
-                if (userInfo) {
+                if (Object.keys(definedUserInfoFields).length > 0) {
                     await tx
                         .update(user_profile)
                         .set({
                             profile_id: userId,
-                            first_name: userInfo.firstName,
-                            last_name: userInfo.lastName,
-                            phone_number: userInfo.phoneNumber,
+                            first_name: definedUserInfoFields.firstName,
+                            last_name: definedUserInfoFields.lastName,
+                            phone_number: definedUserInfoFields.phoneNumber,
                         })
                         .where(eq(user_profile.profile_id, userId));
                 }
