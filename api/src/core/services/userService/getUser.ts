@@ -1,4 +1,8 @@
-import { user, user_profile } from '../../../database/schemas/schema_user';
+import {
+    user,
+    user_address,
+    user_profile,
+} from '../../../database/schemas/schema_user';
 import { db } from '../../../config/database';
 import { eq, sql } from 'drizzle-orm';
 
@@ -40,20 +44,44 @@ export const getUserByEmail = async (
 
 export const getUserById = async (userId: string) => {
     try {
-        const queryData = await db
+        const queryData = await db.query.user_profile.findFirst({
+            where({ profile_id }, { eq }) {
+                return eq(profile_id, userId);
+            },
+        });
+        return queryData;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getUserProfileById = async (userId: string) => {
+    try {
+        const record = await db
             .select({
-                id: user_profile.profile_id,
                 email: user.email,
-                createdAt: user.createdAt,
-                full_name: sql<string>`concat(${user_profile.first_name},' ',${user_profile.last_name})`,
+                firstName: user_profile.first_name,
+                lastName: user_profile.last_name,
                 phoneNumber: user_profile.phone_number,
+                address: {
+                    address: user_address.address,
+                    city: user_address.city,
+                    country: user_address.country,
+                    postcode: user_address.postcode,
+                },
             })
             .from(user)
             .innerJoin(user_profile, eq(user_profile.user_id, user.id))
+            .innerJoin(
+                user_address,
+                eq(user_address.user_id, user_profile.profile_id)
+            )
             .where(eq(user_profile.profile_id, userId));
 
-        return queryData[0];
+        return record[0];
     } catch (error) {
+        console.log(error);
+
         throw error;
     }
 };
