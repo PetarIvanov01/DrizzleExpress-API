@@ -82,5 +82,75 @@
         "price": 650.00,
         "description": "Enhance your powerlifting training with the Eleiko WPPO Powerlifting Competition Plate weighing 25 kg. Crafted to meet the standards of competitive powerlifting, this plate combines durability and accuracy to provide an exceptional lifting experience.",
         "image": "image_1705424756900.jpg"
+    },
+    {
+        "category_id": 1,
+        "title": "ProForm Pro 2000 Treadmill",
+        "price": 1499.99,
+        "description": "Take your cardio workouts to the next level with the ProForm Pro 2000 Treadmill. Featuring a powerful motor and advanced cushioning, this treadmill provides a comfortable and efficient running experience for users of all fitness levels.",
+        "image": "treadmil1.jpg"
+    },
+    {
+        "category_id": 1,
+        "title": "NordicTrack Commercial 1750 Treadmill",
+        "price": 1999.00,
+        "description": "Experience the ultimate in home fitness with the NordicTrack Commercial 1750 Treadmill. With innovative features like interactive training programs and incline matching technology, this treadmill offers a personalized and immersive workout experience.",
+        "image": "treadmil2.jpg"
+    },
+    {
+        "category_id": 1,
+        "title": "Bowflex BXT116 Treadmill",
+        "price": 1299.00,
+        "description": "Get ready to crush your fitness goals with the Bowflex BXT116 Treadmill. Boasting a spacious running surface and multiple workout programs, this treadmill delivers exceptional performance and versatility for your home gym.",
+        "image": "treadmil3.jpg"
+    },
+    {
+        "category_id": 1,
+        "title": "Sole F80 Folding Treadmill",
+        "price": 1499.99,
+        "description": "Maximize your workout space without compromising on performance with the Sole F80 Folding Treadmill. Featuring a powerful motor and durable construction, this treadmill offers a compact yet effective cardio solution for any home gym.",
+        "image": "treadmil4.webp"
+    },
+    {
+        "category_id": 2,
+        "title": "Life Fitness G7 Home Gym",
+        "price": 2999.00,
+        "description": "Transform your home gym into a powerhouse of strength with the Life Fitness G7 Home Gym. With dual adjustable pulleys and a variety of attachments, this home gym provides endless workout possibilities for full-body strength training.",
+        "image": "machine2.webp"
+    },
+    {
+        "category_id": 2,
+        "title": "Body-Solid Powerline Smith Machine",
+        "price": 999.00,
+        "description": "Build muscle and improve your strength with the Body-Solid Powerline Smith Machine. Featuring a smooth linear bearing system and adjustable safety stops, this Smith machine offers a safe and effective strength training experience.",
+        "image": "free-weights1.png"
+    },
+    {
+        "category_id": 2,
+        "title": "Marcy MWM-988 Multifunction Home Gym",
+        "price": 399.99,
+        "description": "Get a complete workout from the comfort of your own home with the Marcy MWM-988 Multifunction Home Gym. With multiple exercise stations and a sturdy steel construction, this home gym is perfect for users of all fitness levels.",
+        "image": "machine1.jpg"
+    },
+    {
+        "category_id": 3,
+        "title": "CAP Barbell 300-Pound Olympic Set",
+        "price": 399.99,
+        "description": "Take your weightlifting workouts to the next level with the CAP Barbell 300-Pound Olympic Set. Featuring high-quality plates and a durable barbell, this set is perfect for serious lifters looking to increase their strength and muscle mass.",
+        "image": "free-weights2.webp"
+    },
+    {
+        "category_id": 3,
+        "title": "Adjustable Dumbbell Set",
+        "price": 249.99,
+        "description": "Achieve your fitness goals with the Adjustable Dumbbell Set. With easy-to-use weight adjustments and a compact design, this set is perfect for home workouts or on-the-go training sessions.",
+        "image": "free-weights3.webp"
+    },
+    {
+        "category_id": 3,
+        "title": "Kettlebell Set",
+        "price": 99.99,
+        "description": "Add versatility to your strength training routine with the Kettlebell Set. Featuring three different weights and a comfortable grip handle, this set is ideal for kettlebell swings, squats, and more.",
+        "image": "free-weights4.webp"
     }
 ]
