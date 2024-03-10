@@ -39,9 +39,9 @@ async function createFormData() {
 
     for (let i = 0; i < mockData.length; i++) {
       const data = mockData[i];
-      const file = files[i];
+      const file = files.find((el) => el.path === data.image);
 
-      if (file.path !== data.image) {
+      if (!file) {
         throw new Error("No such File");
       }
 
