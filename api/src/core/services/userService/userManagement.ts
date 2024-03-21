@@ -78,43 +78,23 @@ export const updateUser = async (userId: string, body: UserUpdateDataTypes) => {
             throw new Error('User does not found!');
         }
 
-        const { shippingInfo, personalInfo } = body;
+        const { personalInfo } = body;
 
-        const definedAddressFields = extractDefinedObj(shippingInfo || {});
         const definedUserInfoFields = extractDefinedObj(personalInfo || {});
 
-        await db.transaction(async (tx) => {
-            try {
-                if (Object.keys(definedAddressFields).length > 0) {
-                    await tx
-                        .update(user_address)
-                        .set({
-                            address: definedAddressFields.address,
-                            city: definedAddressFields.city,
-                            country: definedAddressFields.country,
-                            postcode: definedAddressFields.postcode,
-                        })
-                        .where(eq(user_address.user_id, userId));
-                }
-                if (Object.keys(definedUserInfoFields).length > 0) {
-                    await tx
-                        .update(user_profile)
-                        .set({
-                            profile_id: userId,
-                            first_name: definedUserInfoFields.firstName,
-                            last_name: definedUserInfoFields.lastName,
-                            phone_number: definedUserInfoFields.phoneNumber,
-                        })
-                        .where(eq(user_profile.profile_id, userId));
-                }
-            } catch (error) {
-                tx.rollback();
-                throw error;
-            }
-        });
+        if (Object.keys(definedUserInfoFields).length > 0) {
+            await db
+                .update(user_profile)
+                .set({
+                    profile_id: userId,
+                    first_name: definedUserInfoFields.firstName,
+                    last_name: definedUserInfoFields.lastName,
+                    phone_number: definedUserInfoFields.phoneNumber,
+                })
+                .where(eq(user_profile.profile_id, userId));
+        }
 
         return {
-            ...definedAddressFields,
             ...definedUserInfoFields,
         };
     } catch (error) {
