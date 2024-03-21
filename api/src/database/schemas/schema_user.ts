@@ -28,7 +28,7 @@ export const user_profile = pgTable('user_profile', {
 });
 
 export const user_address = pgTable('user_address', {
-    id: serial('id').primaryKey(),
+    address_id: serial('address_id').primaryKey(),
     user_id: uuid('user_id')
         .references(() => user_profile.profile_id)
         .notNull(),
