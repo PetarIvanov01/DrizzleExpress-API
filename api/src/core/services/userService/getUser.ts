@@ -63,22 +63,35 @@ export const getUserProfileById = async (userId: string) => {
                 firstName: user_profile.first_name,
                 lastName: user_profile.last_name,
                 phoneNumber: user_profile.phone_number,
-                address: {
-                    address: user_address.address,
-                    city: user_address.city,
-                    country: user_address.country,
-                    postcode: user_address.postcode,
-                },
             })
             .from(user)
             .innerJoin(user_profile, eq(user_profile.user_id, user.id))
-            .innerJoin(
-                user_address,
-                eq(user_address.user_id, user_profile.profile_id)
-            )
             .where(eq(user_profile.profile_id, userId));
 
         return record[0];
+    } catch (error) {
+        console.log(error);
+
+        throw error;
+    }
+};
+
+export const getAddresses = async (userId: string, addressId?: string) => {
+    try {
+        if (addressId) {
+            return db.query.user_address.findFirst({
+                where({ address_id }, { eq }) {
+                    return eq(address_id, Number(addressId));
+                },
+            });
+        }
+        const addresses = db.query.user_address.findMany({
+            where({ user_id }, { eq }) {
+                return eq(user_id, userId);
+            },
+        });
+
+        return addresses;
     } catch (error) {
         console.log(error);
 
