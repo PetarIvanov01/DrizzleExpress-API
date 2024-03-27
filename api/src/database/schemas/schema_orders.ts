@@ -13,7 +13,9 @@ import { user } from './schema_user';
 
 export const order_status = pgTable('order_status', {
     status_id: serial('status_id').primaryKey(),
-    status_name: varchar('status_name', { length: 50 }),
+    status_name: varchar('status_name', { length: 50 }).$type<
+        'in-process' | 'finished' | 'canceled'
+    >(),
 });
 
 export const order_info = pgTable('order_info', {
@@ -24,7 +26,8 @@ export const order_info = pgTable('order_info', {
     total_price: numeric('price').notNull(),
     status_id: integer('status_id')
         .references(() => order_status.status_id)
-        .notNull(),
+        .notNull()
+        .default(1),
     order_date: timestamp('order_date', { withTimezone: true })
         .default(new Date())
         .notNull(),
