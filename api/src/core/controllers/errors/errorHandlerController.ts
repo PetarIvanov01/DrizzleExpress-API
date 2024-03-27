@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { ValidationError } from '../../utils/Errors';
+import { AuthorizationError, ValidationError } from '../../utils/Errors';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import { UnauthorizedError } from 'express-jwt';
 interface ErrorPayload {
@@ -34,6 +34,9 @@ const errorHandler = (
         errorPayload.message = error.message ?? 'Validation failed!';
         errorPayload.errors = error.errors;
         status = 422;
+    } else if (error instanceof AuthorizationError) {
+        errorPayload.message = error.message ?? 'Not Authorized!';
+        status = 401;
     }
 
     return res.status(status).send(errorPayload);
