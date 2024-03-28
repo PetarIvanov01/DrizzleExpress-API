@@ -6,34 +6,32 @@ I will be glad to explore the API, contribute to its development, or use it as a
 
 ## Table of Contents
 
-- [User Authentication Endpoints](#user-authentication-endpoints)
-  - [Login Endpoint](#login-endpoint)
-  - [Register Endpoint](#register-endpoint)
-  - [Logout Endpoint](#logout-endpoint)
-  - [Refresh Token Endpoint](#refresh-token-endpoint)
-
-- [User Profile Management Endpoints](#user-profile-management-endpoints)
-  - [Get Profile Endpoint](#get-profile-endpoint)
-  - [Update Profile Endpoint](#update-profile-endpoint)
-  - [Get User Addresses Endpoint](#get-user-addresses-endpoint)
-  - [Create/Add User Address Endpoint](#createadd-user-address-endpoint)
-  - [Update User Address Endpoint](#update-user-address-endpoint)
-
-- [Catalog Management Endpoints](#catalog-management-endpoints)
-  - [Get Catalog Endpoint](#get-catalog-endpoint)
-  - [Get Product Endpoint](#get-product-endpoint)
-
+-   [User Authentication Endpoints](#user-authentication-endpoints)
+    -   [Login Endpoint](#login-endpoint)
+    -   [Register Endpoint](#register-endpoint)
+    -   [Logout Endpoint](#logout-endpoint)
+    -   [Refresh Token Endpoint](#refresh-token-endpoint)
+-   [User Profile Management Endpoints](#user-profile-management-endpoints)
+    -   [Get Profile Endpoint](#get-profile-endpoint)
+    -   [Update Profile Endpoint](#update-profile-endpoint)
+    -   [Get User Addresses Endpoint](#get-user-addresses-endpoint)
+    -   [Create/Add User Address Endpoint](#createadd-user-address-endpoint)
+    -   [Update User Address Endpoint](#update-user-address-endpoint)
+-   [Catalog Management Endpoints](#catalog-management-endpoints)
+    -   [Get Catalog Endpoint](#get-catalog-endpoint)
+    -   [Get Product Endpoint](#get-product-endpoint)
 
 ## Endpoints 📋
 
-- ### User Authentication Endpoints
+-   ### User Authentication Endpoints
 
-    -   **Login Endpoint**
+    -   #### Login Endpoint
 
         -   Request Example:
-    
+
             ```http
-            POST /api/v1/user/sign-in
+            Method: POST
+            Path: /api/v1/user/sign-in
             Content-Type: application/json
             Body:
             {
@@ -41,15 +39,15 @@ I will be glad to explore the API, contribute to its development, or use it as a
                 "password": "string"
             }
             ```
-    
+
         -   Response Example:
-    
+
             ```http
             Body:
             {
                 "message": "You are logged",
                 "payload": {
-                    "id": "string",  
+                    "id": "string",
                     "fullName": "string",
                     "email": "string",
                     "token": "string"
@@ -57,12 +55,13 @@ I will be glad to explore the API, contribute to its development, or use it as a
             }
             ```
 
--   **Register Endpoint**
+-   #### Register Endpoint
 
     -   Request Example:
 
         ```http
-        POST /api/v1/user/sign-up
+        Method: POST
+        Path: /api/v1/user/sign-up
         Content-Type: application/json
         Body:
         {
@@ -88,12 +87,13 @@ I will be glad to explore the API, contribute to its development, or use it as a
         }
         ```
 
--   **Logout Endpoint**
+-   #### Logout Endpoint
 
     -   Request Example:
 
         ```http
-        POST /api/v1/user/logout
+        Method: POST
+        Path: /api/v1/user/logout
         Content-Type: application/json
         ```
 
@@ -106,12 +106,13 @@ I will be glad to explore the API, contribute to its development, or use it as a
         }
         ```
 
--   **Refresh Token Endpoint**
+-   #### Refresh Token Endpoint
 
     -   Request Example:
 
         ```http
-        POST /api/v1/user/refreshtoken
+        Method: POST
+        Path: /api/v1/user/refreshtoken
         Content-Type: application/json
         Set-Cookie: jwt-refresh=string; Path=/api/v1/user/refreshtoken; Expires=Date; HttpOnly; Secure
         Body:
@@ -140,23 +141,23 @@ I will be glad to explore the API, contribute to its development, or use it as a
         }
         ```
 
+> [!IMPORTANT] > **The endpoints below needs Authorization header as JWT token.**
 
-> [!IMPORTANT] 
-> **The endpoints below needs Authorization header as JWT token.**
-- ### User Profile Management Endpoints
+-   ### User Profile Management Endpoints
 
-    -   **Get Profile Endpoint**
-    
+    -   #### Get Profile Endpoint
+
         -   Request Example:
-    
+
             ```http
-            GET /api/v1/user/:userId
+            Method: GET
+            Path: /api/v1/user/:userId
             Content-Type: application/json
             Authorization: string
             ```
-    
+
         -   Response Example:
-    
+
             ```http
             Body:
             {
@@ -166,13 +167,14 @@ I will be glad to explore the API, contribute to its development, or use it as a
                 "phoneNumber": "string"
             }
             ```
-    
-    -   **Update Profile Endpoint**
-    
+
+    -   #### Update Profile Endpoint
+
         -   Request Example:
-    
+
             ```http
-            PUT /api/v1/user/:userId
+            Method: PUT
+            Path: /api/v1/user/:userId
             Content-Type: application/json
             Authorization: string
             Body:
@@ -181,11 +183,11 @@ I will be glad to explore the API, contribute to its development, or use it as a
                     "/* Any field that is used in registration can be updated */"
                 }
             }
-    
+
             ```
-    
+
         -   Response Example:
-    
+
             ```http
             Body:
                 {
@@ -194,21 +196,22 @@ I will be glad to explore the API, contribute to its development, or use it as a
                         "firstName": "petar"
                     }
                 }
-    
+
             ```
-    
-    -   **Get User Addresses Endpoint**
-    
+
+    -   #### Get User Addresses Endpoint
+
         -   Request Example:
-    
+
             ```http
-            GET /api/v1/user/address/:userId
+            Method: GET
+            Path: /api/v1/user/address/:userId
             Content-Type: application/json
             Authorization: string
             ```
-    
+
         -   Response Example
-    
+
             ```http
             Body:
             {
@@ -225,13 +228,14 @@ I will be glad to explore the API, contribute to its development, or use it as a
                 ]
             }
             ```
-    
-    -   **Create/Add User Address Endpoint**
-    
+
+    -   #### Create/Add User Address Endpoint
+
         -   Request Example:
-    
+
             ```http
-            POST /api/v1/user/address/:userId
+            Method: POST
+            Path: /api/v1/user/address/:userId
             Content-Type: application/json
             Authorization: string
             Body:
@@ -244,9 +248,9 @@ I will be glad to explore the API, contribute to its development, or use it as a
                 }
             }
             ```
-    
+
         -   Response Example:
-    
+
             ```http
             Body:
             {
@@ -261,13 +265,14 @@ I will be glad to explore the API, contribute to its development, or use it as a
                     }
             }
             ```
-    
-    -   **Update User Address Endpoint**
-    
+
+    -   #### Update User Address Endpoint
+
         -   Request Example:
-    
+
             ```http
-            PUT /api/v1/user/address/:userId?addressId=string
+            Method: PUT
+            Path: /api/v1/user/address/:userId?addressId=string
             Content-Type: application/json
             Authorization: string
             Body:
@@ -277,9 +282,9 @@ I will be glad to explore the API, contribute to its development, or use it as a
                 }
             }
             ```
-    
+
         -   Response Example:
-    
+
             ```http
             Body:
             {
@@ -290,14 +295,15 @@ I will be glad to explore the API, contribute to its development, or use it as a
             }
             ```
 
-- ### Catalog Management Endpoints
+-   ### Catalog Management Endpoints
 
-    -   **Get Catalog Endpoint**
-    
+    -   #### Get Catalog Endpoint
+
         -   Request Example:
-    
+
             ```http
-            GET /api/v1/catalog
+            Method: GET
+            Path: /api/v1/catalog
             ?Optional Query Params:
             {
                 "category": "'cardio' | 'free-weights' | 'machines'",
@@ -308,9 +314,9 @@ I will be glad to explore the API, contribute to its development, or use it as a
                 "perPage": "number"
             }
             ```
-    
+
         -   Response Example:
-    
+
             ```http
             Body:
             {
@@ -329,17 +335,18 @@ I will be glad to explore the API, contribute to its development, or use it as a
                 ]
             }
             ```
-    
-    -   **Get Product Endpoint**
-    
+
+    -   #### Get Product Endpoint
+
         -   Request Example:
-    
+
             ```http
-            GET /api/v1/catalog/:productId
+            Method: GET
+            Path: /api/v1/catalog/:productId
             ```
-    
+
         -   Response Example:
-    
+
             ```http
             Body:
             {
@@ -353,15 +360,17 @@ I will be glad to explore the API, contribute to its development, or use it as a
                     }
             }
             ```
-    
-> [!IMPORTANT] 
+
+> [!IMPORTANT]
 > The endpoint below is restricted to administrators only. Users must have admin privileges to access this endpoint.
--   **Create Product Endpoint**
-    
+
+-   #### Create Product Endpoint
+
     -   Request Example:
 
         ```http
-        POST /api/v1/catalog
+        Method: POST
+        Path: /api/v1/catalog
         Authorization: "string"
         Content-Type: multipart/form-data
         Body:
@@ -374,9 +383,9 @@ I will be glad to explore the API, contribute to its development, or use it as a
             "image": "file"
         }
         ```
-            
+
     -   Response Example:
-    
+
         ```http
         Body:
         {
@@ -389,6 +398,7 @@ I will be glad to explore the API, contribute to its development, or use it as a
             }
         }
         ```
+
 <!--
 ## Authorization
 
