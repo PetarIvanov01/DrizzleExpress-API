@@ -318,23 +318,84 @@ I will be glad to explore the API, contribute to its development, or use it as a
 
     -   Response Example:
 
-            ```http
-            Response Body
-            {
-                "itemsLng": 1,
-                "result": [
-                    {
-                        "product_id": uuid(string),
-                        "categoriy_id": number,
-                        "title": string,
-                        "price": string,
-                        "description": string,
-                        "image": string(image path),
-                        "type": 'cardio' | 'free-weights' | 'machines',
-                        "quantity": number
-                    }
-                ]
+        ```http
+        Response Body
+        {
+            "itemsLng": 1,
+            "result": [
+                {
+                    "product_id": uuid(string),
+                    "categoriy_id": number,
+                    "title": string,
+                    "price": string,
+                    "description": string,
+                    "image": string(image path),
+                    "type": 'cardio' | 'free-weights' | 'machines',
+                    "quantity": number
+                }
+            ]
+        }
+        ```
+
+-   **Get Product Endpoint**
+
+    -   Request Example:
+
+        ```http
+        GET /api/v1/catalog/:productId
+        ```
+
+    -   Response Example:
+
+        ```http
+        Response Body
+        {
+            "result": {
+                    "product_id": uuid(string),
+                    "category_id": number,
+                    "title": string,
+                    "price": string,
+                    "description": string,
+                    "image": string(image path)
+                }
+        }
+        ```
+
+-   **Create Product Endpoint**
+
+    > [!CAUTION]
+    > This endpoint is restricted to administrators only. Users must have admin privileges to access this endpoint.
+
+    -   Request Example:
+
+        ```http
+        POST /api/v1/catalog
+        Authorization: JWT(string)
+        Content-Type: multipart/form-data
+        Request Body {
+            email: string // Required for admin validation
+            category_id: number,
+            description: string,
+            price: string,
+            title: string,
+            image: file,
+        }
+        ```
+
+    -   Response Example:
+
+        ```http
+        Response Body
+        {
+            "result": {
+                category_id: number,
+                description: string,
+                price: string,
+                title: string,
+                image: file,
             }
+        }
+        ```
 
 <!--
 ## Authorization
