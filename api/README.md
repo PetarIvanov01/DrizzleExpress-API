@@ -4,82 +4,88 @@ Hey there! I'm excited to introduce you to my `Fitness-API` — it's the backbon
 
 I will be glad to explore the API, contribute to its development, or use it as a reference for your own projects. Also don't forget to give feedback 😅.
 
-## Table of Contents 📃
+## Table of Contents
 
--   [Endpoints](#endpoints-📋)
-    -   [User Endpoints](#user-endpoints-🔒)
-    -   [Products Endpoints](#products-endpoints)
-    -   [Cart Endpoints](#cart-endpoints)
--   [Authorization](#authorization)
--   [Installation](#installation)
--   [License](#license)
+- [User Authentication Endpoints](#user-authentication-endpoints)
+  - [Login Endpoint](#login-endpoint)
+  - [Register Endpoint](#register-endpoint)
+  - [Logout Endpoint](#logout-endpoint)
+  - [Refresh Token Endpoint](#refresh-token-endpoint)
+
+- [User Profile Management Endpoints](#user-profile-management-endpoints)
+  - [Get Profile Endpoint](#get-profile-endpoint)
+  - [Update Profile Endpoint](#update-profile-endpoint)
+  - [Get User Addresses Endpoint](#get-user-addresses-endpoint)
+  - [Create/Add User Address Endpoint](#createadd-user-address-endpoint)
+  - [Update User Address Endpoint](#update-user-address-endpoint)
+
+- [Catalog Management Endpoints](#catalog-management-endpoints)
+  - [Get Catalog Endpoint](#get-catalog-endpoint)
+  - [Get Product Endpoint](#get-product-endpoint)
+
 
 ## Endpoints 📋
 
-### User Authentication Endpoints 🔒
+- ### User Authentication Endpoints
 
--   **Login Endpoint**
+    -   **Login Endpoint**
 
-    -   Request Example:
-
-        ```http
-        POST /api/v1/user/sign-in
-        Content-Type: application/json
-
-        Request Body
-        {
-            "email": string,
-            "password": string
-        }
-        ```
-
-    -   Response Example:
-
-        ```http
-        Response Body
-        {
-            "message": "You are logged",
-            "payload": {
-                "id": uuid(string),
-                "fullName": string,
-                "email": string,
-                "token": JWT(string)
+        -   Request Example:
+    
+            ```http
+            POST /api/v1/user/sign-in
+            Content-Type: application/json
+            Body:
+            {
+                "email": "string",
+                "password": "string"
             }
-        }
-
-        ```
+            ```
+    
+        -   Response Example:
+    
+            ```http
+            Body:
+            {
+                "message": "You are logged",
+                "payload": {
+                    "id": "string",  
+                    "fullName": "string",
+                    "email": "string",
+                    "token": "string"
+                }
+            }
+            ```
 
 -   **Register Endpoint**
 
     -   Request Example:
 
         ```http
-            POST /api/v1/user/sign-up
-            Content-Type: application/json
-
-            Request Body
-            {
-                "email": string,
-                "password": "string,
-                "rePassword": string,
-                "firstName": string,
-                "lastName": string,
-                "phoneNumber": string
-            }
+        POST /api/v1/user/sign-up
+        Content-Type: application/json
+        Body:
+        {
+            "email": "string",
+            "password": "string",
+            "rePassword": "string",
+            "firstName": "string",
+            "lastName": "string",
+            "phoneNumber": "string"
+        }
         ```
 
     -   Response Example:
 
         ```http
-          Response Body {
-                "message": "You are registered",
-                "payload": {
-                    "email": string,
-                    "fullName": string,
-                    "id": uuid(string)
-                    "token": JWT(string)
-                }
-            }
+        Body: {
+            "message": "You are registered",
+            "payload": {
+            "email": "string",
+            "fullName": "string",
+            "id": "string"
+            "token": "string"
+        }
         ```
 
 -   **Logout Endpoint**
@@ -87,18 +93,17 @@ I will be glad to explore the API, contribute to its development, or use it as a
     -   Request Example:
 
         ```http
-            POST /api/v1/user/logout
-            Content-Type: application/json
-            Cookies: string
+        POST /api/v1/user/logout
+        Content-Type: application/json
         ```
 
     -   Response Example:
 
         ```http
-          Response Body
-          {
+        Body:
+        {
             "message": "Logout successful"
-          }
+        }
         ```
 
 -   **Refresh Token Endpoint**
@@ -106,297 +111,284 @@ I will be glad to explore the API, contribute to its development, or use it as a
     -   Request Example:
 
         ```http
-            POST /api/v1/user/refreshtoken
+        POST /api/v1/user/refreshtoken
+        Content-Type: application/json
+        Set-Cookie: jwt-refresh=string; Path=/api/v1/user/refreshtoken; Expires=Date; HttpOnly; Secure
+        Body:
+        {
+            "email": "string",
+            "password": "string",
+            "rePassword": "string",
+            "firstName": "string",
+            "lastName": "string",
+            "phoneNumber": "string"
+        }
+        ```
+
+    -   Response Example:
+
+        ```http
+        Body:
+        {
+            "message": "Tokens successfully refreshed.",
+            "payload": {
+                "email": "string",
+                "fullName": "string",
+                "id": "string"
+                "token": "string"
+            }
+        }
+        ```
+
+
+> [!IMPORTANT] 
+> **The endpoints below needs Authorization header as JWT token.**
+- ### User Profile Management Endpoints
+
+    -   **Get Profile Endpoint**
+    
+        -   Request Example:
+    
+            ```http
+            GET /api/v1/user/:userId
             Content-Type: application/json
-
-            Request Body
+            Authorization: string
+            ```
+    
+        -   Response Example:
+    
+            ```http
+            Body:
             {
-                "email": string,
-                "password": "string,
-                "rePassword": string,
-                "firstName": string,
-                "lastName": string,
-                "phoneNumber": string
+                "firstName":"string",
+                "email": "string",
+                "lastName": "string",
+                "phoneNumber": "string"
             }
-        ```
-
-    -   Response Example:
-
-        ```http
-          Cookies
+            ```
+    
+    -   **Update Profile Endpoint**
+    
+        -   Request Example:
+    
+            ```http
+            PUT /api/v1/user/:userId
+            Content-Type: application/json
+            Authorization: string
+            Body:
             {
-              name: jwt-refresh,
-              value: JWT(string),
-              path: /api/v1/user/refreshtoken,
-              Expires: Date,
-              HttpOnly: true,
-              Secure: true
+                "personalInfo": {
+                    "/* Any field that is used in registration can be updated */"
+                }
             }
-
-          Response Body
+    
+            ```
+    
+        -   Response Example:
+    
+            ```http
+            Body:
+                {
+                    "message": "Update user",
+                    "updatedFields": {
+                        "firstName": "petar"
+                    }
+                }
+    
+            ```
+    
+    -   **Get User Addresses Endpoint**
+    
+        -   Request Example:
+    
+            ```http
+            GET /api/v1/user/address/:userId
+            Content-Type: application/json
+            Authorization: string
+            ```
+    
+        -   Response Example
+    
+            ```http
+            Body:
             {
-                "message": "Tokens successfully refreshed.",
+                "message": "All user addresses",
+                "payload": [
+                    {
+                        "address_id": "number",
+                        "user_id": "string",
+                        "country": "string | null",
+                        "city": "string | null",
+                        "address": "string | null",
+                        "postcode": "number | null"
+                    }
+                ]
+            }
+            ```
+    
+    -   **Create/Add User Address Endpoint**
+    
+        -   Request Example:
+    
+            ```http
+            POST /api/v1/user/address/:userId
+            Content-Type: application/json
+            Authorization: string
+            Body:
+            {
+                "shippingInfo": {
+                    "country": "string",
+                    "city": "string",
+                    "address": "string",
+                    "postcode": "number"
+                }
+            }
+            ```
+    
+        -   Response Example:
+    
+            ```http
+            Body:
+            {
+                "message": "New address added",
                 "payload": {
-                    "email": string,
-                    "fullName": string,
-                    "id": uuid(string)
-                    "token": JWT(string)
-                }
+                        "address_id": "number",
+                        "user_id": "string",
+                        "country": "string",
+                        "city": "string",
+                        "address": "string",
+                        "postcode": "number"
+                    }
             }
-        ```
-
-### User Profile Management Endpoints
-
-> **These endpoints needs Authorization header as JWT token.**
-
--   **Get Profile Endpoint**
-
-    -   Request Example:
-
-        ```http
-        GET /api/v1/user/:userId
-        Content-Type: application/json
-        Authorization: JWT(string)
-
-        ```
-
-    -   Response Example:
-
-        ```http
-        Response Body
-        {
-            "firstName":string,
-            "email": string,
-            "lastName": string,
-            "phoneNumber": string
-        }
-
-        ```
-
--   **Update Profile Endpoint**
-
-    -   Request Example:
-
-        ```http
-        PUT /api/v1/user/:userId
-        Content-Type: application/json
-        Authorization: JWT(string)
-        Request Body:
-        {
-            "personalInfo": {
-                "firstName":string
-                //Any field that is used in registration can be update
-            }
-        }
-
-        ```
-
-    -   Response Example:
-
-        ```http
-        Response Body
+            ```
+    
+    -   **Update User Address Endpoint**
+    
+        -   Request Example:
+    
+            ```http
+            PUT /api/v1/user/address/:userId?addressId=string
+            Content-Type: application/json
+            Authorization: string
+            Body:
             {
-                "message": "Update user",
-                "updatedFields": {
-                    "firstName": "petar"
+                "shippingInfo": {
+                    "/* Any field that is used in add address can be updated */"
                 }
             }
-
-        ```
-
--   **Get User Addresses Endpoint**
-
-    -   Request Example:
-
-        ```http
-        GET /api/v1/user/address/:userId
-        Content-Type: application/json
-        Authorization: JWT(string)
-        ```
-
-    -   Response Example
-
-        ```http
-        Response Body
-        {
-            "message": "All user addresses",
-            "payload": [
-                {
-                    "address_id": number,
-                    "user_id": uuid(string),
-                    "country": string | null,
-                    "city": string | null,
-                    "address": string | null,
-                    "postcode": number | null
+            ```
+    
+        -   Response Example:
+    
+            ```http
+            Body:
+            {
+                "message": "Address {addressId} is update",
+                "payload": {
+                    "/* Only the updated fields */"
                 }
-            ]
-        }
-        ```
-
--   **Create/Add User Address Endpoint**
-
-    -   Request Example:
-
-        ```http
-        POST /api/v1/user/address/:userId
-        Content-Type: application/json
-        Authorization: JWT(string)
-        Request Body
-        {
-            "shippingInfo": {
-                "country": string,
-                "city": string,
-                "address": string,
-                "postcode": number
             }
-        }
-        ```
+            ```
 
-    -   Response Example:
+- ### Catalog Management Endpoints
 
-        ```http
-        Response Body
-        {
-            "message": "New address added",
-            "payload": {
-                    "address_id": number,
-                    "user_id": uuid(string),
-                    "country": string,
-                    "city": string,
-                    "address": string,
-                    "postcode": number
-                }
-        }
-        ```
-
--   **Update User Address Endpoint**
-
-    -   Request Example:
-
-        ```http
-        PUT /api/v1/user/address/:userId?addressId=string
-        Content-Type: application/json
-        Authorization: JWT(string)
-        Request Body:
-        {
-            "shippingInfo": {
-                //Every field from create endpoint
+    -   **Get Catalog Endpoint**
+    
+        -   Request Example:
+    
+            ```http
+            GET /api/v1/catalog
+            ?Optional Query Params:
+            {
+                "category": "'cardio' | 'free-weights' | 'machines'",
+                "sort_by": "'asc' | 'desc'",
+                "from": "number",
+                "to": "nubmer",
+                "page": "number",
+                "perPage": "number"
             }
-        }
-        ```
-
-    -   Response Example:
-
-        ```http
-        Response Body
-        {
-            "message": "Address {addressId} is update",
-            "payload": {
-                //Only the updated fields
+            ```
+    
+        -   Response Example:
+    
+            ```http
+            Body:
+            {
+                "itemsLng": 1,
+                "result": [
+                    {
+                        "product_id": "string",
+                        "categoriy_id": "number",
+                        "title": "string",
+                        "price": "string",
+                        "description": "string",
+                        "image": "string(image path)",
+                        "type": "'cardio' | 'free-weights' | 'machines'",
+                        "quantity": "number"
+                    }
+                ]
             }
-        }
-        ```
-
-### Catalog Management Endpoints
-
--   **Get Catalog Endpoint**
-
-    -   Request Example:
-
-        ```http
-        GET /api/v1/catalog
-        ?Optional Query Params
-        {
-            'category': 'cardio' | 'free-weights' | 'machines',
-            'sort_by': 'asc' | 'desc',
-            'from',
-            'to',
-            'page',
-            'perPage'
-        }
-        ```
-
-    -   Response Example:
-
-        ```http
-        Response Body
-        {
-            "itemsLng": 1,
-            "result": [
-                {
-                    "product_id": uuid(string),
-                    "categoriy_id": number,
-                    "title": string,
-                    "price": string,
-                    "description": string,
-                    "image": string(image path),
-                    "type": 'cardio' | 'free-weights' | 'machines',
-                    "quantity": number
-                }
-            ]
-        }
-        ```
-
--   **Get Product Endpoint**
-
-    -   Request Example:
-
-        ```http
-        GET /api/v1/catalog/:productId
-        ```
-
-    -   Response Example:
-
-        ```http
-        Response Body
-        {
-            "result": {
-                    "product_id": uuid(string),
-                    "category_id": number,
-                    "title": string,
-                    "price": string,
-                    "description": string,
-                    "image": string(image path)
-                }
-        }
-        ```
-
+            ```
+    
+    -   **Get Product Endpoint**
+    
+        -   Request Example:
+    
+            ```http
+            GET /api/v1/catalog/:productId
+            ```
+    
+        -   Response Example:
+    
+            ```http
+            Body:
+            {
+                "result": {
+                        "product_id": "string",
+                        "category_id": "number",
+                        "title": "string",
+                        "price": "string",
+                        "description": "string",
+                        "image": "string(image path)"
+                    }
+            }
+            ```
+    
+> [!IMPORTANT] 
+> The endpoint below is restricted to administrators only. Users must have admin privileges to access this endpoint.
 -   **Create Product Endpoint**
-
-    > [!CAUTION]
-    > This endpoint is restricted to administrators only. Users must have admin privileges to access this endpoint.
-
+    
     -   Request Example:
 
         ```http
         POST /api/v1/catalog
-        Authorization: JWT(string)
+        Authorization: "string"
         Content-Type: multipart/form-data
-        Request Body {
-            email: string // Required for admin validation
-            category_id: number,
-            description: string,
-            price: string,
-            title: string,
-            image: file,
+        Body:
+        {
+            "email": "'string' /* Required for admin validation */"
+            "category_id": "number",
+            "description": "string",
+            "price": "string",
+            "title": "string",
+            "image": "file"
         }
         ```
-
+            
     -   Response Example:
-
+    
         ```http
-        Response Body
+        Body:
         {
             "result": {
-                category_id: number,
-                description: string,
-                price: string,
-                title: string,
-                image: file,
+                "category_id": "number",
+                "description": "string",
+                "price": "string",
+                "title": "string",
+                "image": "file",
             }
         }
         ```
-
 <!--
 ## Authorization
 
