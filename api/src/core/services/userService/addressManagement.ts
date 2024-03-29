@@ -49,7 +49,7 @@ export const createAddress = async (
             })
             .returning();
 
-        return userRecord;
+        return userRecord[0];
     } catch (error) {
         throw error;
     }
