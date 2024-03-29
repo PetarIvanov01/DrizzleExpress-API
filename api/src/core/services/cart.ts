@@ -1,5 +1,9 @@
-import { db } from '../../config/database';
 import { CartItems } from '../controllers/cart/cartController';
+import takeUniqueOrThrow from '../utils/takeUniqueOrThrow';
+
+import { db } from '../../config/database';
+import { categories, products } from '../../database/schemas/schema_products';
+import { eq } from 'drizzle-orm';
 
 type Product =
     | {
@@ -9,6 +13,7 @@ type Product =
           price: string;
           image: string | null;
           quantity?: number;
+          type: 'cardio' | 'machines' | 'free-weights';
       }
     | undefined;
 
@@ -20,14 +25,23 @@ export const getCartDataService = async (
 
         const data = await Promise.all(
             idsKeys.map(async (i) => {
-                const product: Product = await db.query.products.findFirst({
-                    where(products, { eq }) {
-                        return eq(products.product_id, i);
-                    },
-                    columns: {
-                        description: false,
-                    },
-                });
+                const product: Product | undefined = await db
+                    .select({
+                        category_id: categories.category_id,
+                        product_id: products.product_id,
+                        title: products.title,
+                        price: products.price,
+                        image: products.image,
+                        type: categories.type,
+                    })
+                    .from(products)
+                    .innerJoin(
+                        categories,
+                        eq(categories.category_id, products.category_id)
+                    )
+                    .where(eq(products.product_id, i))
+                    .then(takeUniqueOrThrow);
+
                 if (product) {
                     product.quantity = ids[i];
                 }
