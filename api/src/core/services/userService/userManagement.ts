@@ -1,5 +1,5 @@
 import {
-    user,
+    user as user_,
     user_address,
     user_profile,
 } from '../../../database/schemas/schema_user';
@@ -8,19 +8,6 @@ import { UserRegisterData } from '../../../typescript/interfaces/user.interface'
 import { getUserByEmail, getUserById } from './getUser';
 import { eq } from 'drizzle-orm';
 
-interface UserUpdateDataTypes {
-    shippingInfo?: {
-        city?: string;
-        address?: string;
-        country?: string;
-        postcode?: number;
-    };
-    personalInfo?: {
-        firstName?: string;
-        lastName?: string;
-        phoneNumber?: string;
-    };
-}
 //Todo make one function that will receive different fields and will query by them
 export const createUser = async (userValues: UserRegisterData) => {
     try {
@@ -28,23 +15,25 @@ export const createUser = async (userValues: UserRegisterData) => {
 
         if (existingUser) throw new Error('Email is taken');
 
-        const otherInfo = {
-            first_name: userValues.otherInfo.firstName,
-            last_name: userValues.otherInfo.lastName,
-            phone_number: userValues.otherInfo.phoneNumber,
-        };
-
         const userId = await db.transaction(async (tx) => {
             try {
                 const userRecord = await tx
-                    .insert(user)
-                    .values(userValues)
-                    .returning({ id: user.id });
+                    .insert(user_)
+                    .values({
+                        email: userValues.email,
+                        password: userValues.password,
+                    })
+                    .returning({ id: user_.id });
                 const user_id = userRecord[0].id;
 
                 const userProfile = await tx
                     .insert(user_profile)
-                    .values({ user_id, ...otherInfo })
+                    .values({
+                        user_id,
+                        first_name: userValues.otherInfo.firstName,
+                        last_name: userValues.otherInfo.lastName,
+                        phone_number: userValues.otherInfo.phoneNumber,
+                    })
                     .returning();
 
                 await tx
@@ -53,6 +42,7 @@ export const createUser = async (userValues: UserRegisterData) => {
 
                 return userProfile[0].profile_id;
             } catch (error) {
+                console.log(error);
                 tx.rollback();
                 throw error;
             }
@@ -69,6 +59,20 @@ export const createUser = async (userValues: UserRegisterData) => {
         throw error;
     }
 };
+
+interface UserUpdateDataTypes {
+    shippingInfo?: {
+        city?: string;
+        address?: string;
+        country?: string;
+        postcode?: number;
+    };
+    personalInfo?: {
+        firstName?: string;
+        lastName?: string;
+        phoneNumber?: string;
+    };
+}
 
 export const updateUser = async (userId: string, body: UserUpdateDataTypes) => {
     try {
