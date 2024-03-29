@@ -8,13 +8,10 @@ import {
 } from '../../services/catalog';
 
 import { RequestWithQueryData } from '../../../typescript/interfaces/query.interface';
+import wrapController from '../../helpers/wrapperTryCatch';
 
-export const insertCatalogController = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    try {
+export const insertCatalogController = wrapController(
+    async (req: Request, res: Response) => {
         const data = req.body;
         const file = req.file;
 
@@ -27,16 +24,11 @@ export const insertCatalogController = async (
         res.status(200).json({
             result,
         });
-    } catch (error) {
-        next(error);
     }
-};
+);
 
-export const getCatalogController = async (
-    req: RequestWithQueryData,
-    res: Response
-) => {
-    try {
+export const getCatalogController = wrapController(
+    async (req: RequestWithQueryData, res: Response) => {
         let searchBy = req.searchBy || {};
         const values = await getCatalogData(searchBy);
 
@@ -44,32 +36,30 @@ export const getCatalogController = async (
             itemsLng: values.itemsLng,
             result: values.result,
         });
-    } catch (error) {
-        throw error;
     }
-};
+);
 
-export const getProductByIdController = async (req: Request, res: Response) => {
-    try {
+export const getProductByIdController = wrapController(
+    async (req: Request, res: Response) => {
         const productId = req.params.productId;
-        if (!productId) return res.status(201).send();
+        if (!productId) return res.status(204).json({});
 
-        const product = await getProductId(productId);
+        const result = await getProductId(productId);
 
-        res.send(product);
-    } catch (error) {
-        throw error;
+        res.status(200).json({ result });
     }
-};
+);
 
-export const deleteItemFromCatalog = async (req: Request, res: Response) => {
-    try {
-        _deleteData();
+export const deleteItemFromCatalog = wrapController(
+    async (req: Request, res: Response) => {
+        try {
+            _deleteData();
 
-        res.json({
-            message: 'Delete',
-        });
-    } catch (error) {
-        throw error;
+            res.json({
+                message: 'Delete',
+            });
+        } catch (error) {
+            throw error;
+        }
     }
-};
+);
