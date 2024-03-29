@@ -28,12 +28,10 @@ const regService = async (userData: UserRegisterData) => {
         const userValues = {
             email,
             password: await bcryptjs.hash(password, 10),
+            otherInfo: { ...userData.otherInfo },
         };
 
-        const payload = await createUser({
-            ...userValues,
-            otherInfo: { ...userData.otherInfo },
-        });
+        const payload = await createUser(userValues);
 
         const token = await signJWT(payload);
         const refreshToken = await signJWT_Refresh(payload);
