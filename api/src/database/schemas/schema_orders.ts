@@ -9,7 +9,7 @@ import {
     text,
 } from 'drizzle-orm/pg-core';
 import { products } from './schema_products';
-import { user } from './schema_user';
+import { user_profile } from './schema_user';
 
 export const order_status = pgTable('order_status', {
     status_id: serial('status_id').primaryKey(),
@@ -21,12 +21,11 @@ export const order_status = pgTable('order_status', {
 export const order_info = pgTable('order_info', {
     order_id: uuid('order_id').primaryKey().defaultRandom(),
     user_id: uuid('user_id')
-        .references(() => user.id)
+        .references(() => user_profile.profile_id)
         .notNull(),
     total_price: numeric('price').notNull(),
     status_id: integer('status_id')
         .references(() => order_status.status_id)
-        .notNull()
         .default(1),
     order_date: timestamp('order_date', { withTimezone: true })
         .default(new Date())
