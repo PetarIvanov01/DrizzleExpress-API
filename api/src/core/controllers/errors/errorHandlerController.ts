@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { AuthorizationError, ValidationError } from '../../utils/Errors';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import { UnauthorizedError } from 'express-jwt';
+import { DrizzleError } from 'drizzle-orm';
+
 interface ErrorPayload {
     type: string;
     message: string;
@@ -37,6 +39,9 @@ const errorHandler = (
     } else if (error instanceof AuthorizationError) {
         errorPayload.message = error.message ?? 'Not Authorized!';
         status = 401;
+    } else if (error instanceof DrizzleError) {
+        errorPayload.message = error.message ?? 'Internel Error';
+        status = 422;
     }
 
     return res.status(status).send(errorPayload);
