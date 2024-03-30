@@ -13,14 +13,12 @@ import isAdmin from '../middlewares/isAdmin';
 
 const catalogRoute = Router();
 
-catalogRoute.post(
-    '/',
-    isAdmin,
-    fileExtractionMiddlawere('image'),
-    insertCatalogController
-);
-catalogRoute.get('/', querryMiddlware, getCatalogController);
+catalogRoute
+    .route('/')
+    .get(querryMiddlware, getCatalogController)
+    .post(isAdmin, fileExtractionMiddlawere('image'), insertCatalogController)
+    .delete(isAdmin, deleteItemFromCatalog);
+
 catalogRoute.get('/:productId', getProductByIdController);
-catalogRoute.delete(`/`, isAdmin, deleteItemFromCatalog);
 
 export default catalogRoute;
