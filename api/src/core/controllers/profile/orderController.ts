@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 import wrapController from '../../helpers/wrapperTryCatch';
-import createOrder from '../../services/userService/ordersManagement';
+
+import {
+    createOrder,
+    getOrders,
+} from '../../services/userService/ordersManagement';
 
 export const getUserOrders = wrapController(async function (
     req: Request,
@@ -9,8 +13,7 @@ export const getUserOrders = wrapController(async function (
     const { userId } = req.params;
     const { orderId } = req.query as { orderId?: string };
 
-    const payload = {};
-    // await getOrders(userId, orderId);
+    const payload = await getOrders(userId, orderId);
 
     res.status(200).json({ message: 'User orders', payload });
 });
@@ -20,9 +23,11 @@ export const createUserOrder = wrapController(async function (
     res: Response
 ) {
     const { userId } = req.params;
-    const body = req.body;
 
-    const payload = await createOrder(userId, body);
+    await createOrder(userId, req.body);
 
-    res.status(201).json({ message: 'New order added', payload });
+    res.status(201).json({
+        message: 'Order sucessfully created',
+        body: req.body,
+    });
 });
