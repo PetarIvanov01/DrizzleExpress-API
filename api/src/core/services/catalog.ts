@@ -26,7 +26,7 @@ export const insertCatalogData = async (data: NewProductType, file: IFile) => {
 };
 
 export const getCatalogData = async (search: SearchQuery) => {
-    const MAX_PERPAGE = 4;
+    const MAX_PERPAGE = 6;
     try {
         const table1Conditions: SQLWrapper[] = [];
 

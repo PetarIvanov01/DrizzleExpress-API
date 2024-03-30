@@ -1,8 +1,4 @@
-import {
-    user,
-    user_address,
-    user_profile,
-} from '../../../database/schemas/schema_user';
+import { user, user_profile } from '../../../database/schemas/schema_user';
 import { db } from '../../../config/database';
 import { eq, sql } from 'drizzle-orm';
 
@@ -94,7 +90,6 @@ export const getAddresses = async (userId: string, addressId?: string) => {
         return addresses;
     } catch (error) {
         console.log(error);
-
         throw error;
     }
 };
