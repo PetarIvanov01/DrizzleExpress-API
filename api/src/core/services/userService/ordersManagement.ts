@@ -1,71 +1,135 @@
 import { db } from '../../../config/database';
-import { and, eq, sql } from 'drizzle-orm';
 
 import {
     order_info,
-    order_product_info,
     order_status,
+    order_product_info,
     user_order_address,
     user_order_personal_info,
 } from '../../../database/schemas/schema_orders';
 
 import { getUserById } from './getUser';
+import { Order } from '../../schemas/orderSchema';
+import { DrizzleError, and, eq } from 'drizzle-orm';
+import takeUniqueOrThrow from '../../utils/takeUniqueOrThrow';
 
-export default async function createOrder(userId: string, body: any) {
+export async function createOrder(
+    userId: string,
+    order: Order
+): Promise<void> | never {
     try {
         const existingUser = await getUserById(userId);
-
         if (!existingUser) throw new Error('User with that ID did not exist');
 
-        /*
+        await db.transaction(async (tx) => {
+            try {
+                const order_id = await tx
+                    .insert(order_info)
+                    .values({
+                        user_id: userId,
+                        total_price: order.orderInfo.totalPrice.toString(),
+                    })
+                    .returning({ orderId: order_info.order_id })
+                    .then((e) => e[0].orderId);
 
-        ? Interface for the body that comes in an argument
-        * Validate body existince(all fields should be defined) 
-        * If some field is missing throw error(missing fields, "Not allowed")
+                await tx.insert(user_order_personal_info).values({
+                    order_id,
+                    full_name: `${existingUser.first_name} ${existingUser.last_name}`,
+                    phone_number: existingUser.phone_number,
+                });
 
-        ! Use transaction to perform all queries
-        ! If error rollback the transaction
+                await tx.insert(user_order_address).values({
+                    order_id,
+                    ...order.orderInfo.orderAddress,
+                });
 
-        - 1. Create order
-        - 2. Get order id 
-        - 3. Set order id in the user_order_personal_info table with the other fields
-        - 4. Set order id in the user_order_address table with the other fields
-        - 5. Set order id in the order_product_info table with the other fields
-
-        */
-
-        return {};
+                for (const orderProduct of order.orderProducts) {
+                    await tx.insert(order_product_info).values({
+                        order_id,
+                        product_id: orderProduct._productId,
+                        quantity: orderProduct.quantity,
+                        subtotal: orderProduct.subtotal.toString(),
+                    });
+                }
+            } catch (error) {
+                try {
+                    tx.rollback();
+                } catch (error) {
+                    throw new DrizzleError({
+                        message:
+                            'Operation is rollback. Please check your request!',
+                    });
+                }
+            }
+        });
     } catch (error) {
         throw error;
     }
 }
 
-interface Order {
-    order_status: {
-        status_name: string;
-    };
-    order_info: {
-        user_id: string;
-        total_price: string;
-        status_id: string;
-        order_date: string;
-    };
-    user_order_personal_info: {
-        full_name: string;
-        phone_number: string;
-        order_id: string;
-    };
-    user_order_address: {
-        order_id: string;
-        country: string;
-        city: string;
-        address: string;
-        postcode: number;
-    };
-    order_product_info: {
-        order_id: string;
-        product_id: string;
-        quantity: string;
-        subtotal: string;
-    };
+export async function getOrders(userId: string, orderId: string | undefined) {
+    try {
+        const existingUser = await getUserById(userId);
+        if (!existingUser) throw new Error('User with that ID did not exist');
+
+        if (orderId) {
+            const orderInfo = await db
+                .select({
+                    orderId: order_info.order_id,
+                    totalPrice: order_info.total_price,
+                    status_name: order_status.status_name,
+                    createdAt: order_info.order_date,
+                    userProfile: {
+                        userId: order_info.user_id,
+                        fullName: user_order_personal_info.full_name,
+                        phoneNumber: user_order_personal_info.phone_number,
+                    },
+                    userAddress: {
+                        country: user_order_address.country,
+                        city: user_order_address.city,
+                        address: user_order_address.address,
+                        postcode: user_order_address.postcode,
+                    },
+                })
+                .from(order_info)
+                .where(
+                    and(
+                        eq(order_info.order_id, orderId),
+                        eq(order_info.user_id, userId)
+                    )
+                )
+                .innerJoin(
+                    order_status,
+                    eq(order_status.status_id, order_info.status_id)
+                )
+                .innerJoin(
+                    user_order_address,
+                    eq(user_order_address.order_id, order_info.order_id)
+                )
+                .innerJoin(
+                    user_order_personal_info,
+                    eq(user_order_personal_info.order_id, order_info.order_id)
+                )
+                .then(takeUniqueOrThrow);
+
+            const orderedProducts = await db
+                .select({
+                    productId: order_product_info.product_id,
+                    quantity: order_product_info.quantity,
+                    subtotal: order_product_info.subtotal,
+                })
+                .from(order_product_info)
+                .where(eq(order_product_info.order_id, orderId));
+
+            return { orderInfo, orderedProducts };
+        }
+
+        return db.query.order_info.findMany({
+            where({ user_id }, { eq }) {
+                return eq(user_id, userId);
+            },
+        });
+    } catch (error) {
+        throw error;
+    }
 }
