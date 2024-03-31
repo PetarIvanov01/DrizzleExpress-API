@@ -304,7 +304,7 @@ I will be glad to explore the API, contribute to its development, or use it as a
             ```http
             Method: GET
             Path: /api/v1/catalog
-            ?Optional Query Params:
+            Queries:
             {
                 "category": "'cardio' | 'free-weights' | 'machines'",
                 "sort_by": "'asc' | 'desc'",
