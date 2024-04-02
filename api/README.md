@@ -31,7 +31,7 @@ I will be glad to explore the API, contribute to its development, or use it as a
 
             ```http
             Method: POST
-            Path: /api/v1/user/sign-in
+            Path: /api/v1/users/sign-in
             Content-Type: application/json
             Body:
             {
@@ -61,7 +61,7 @@ I will be glad to explore the API, contribute to its development, or use it as a
 
         ```http
         Method: POST
-        Path: /api/v1/user/sign-up
+        Path: /api/v1/users/sign-up
         Content-Type: application/json
         Body:
         {
@@ -93,7 +93,7 @@ I will be glad to explore the API, contribute to its development, or use it as a
 
         ```http
         Method: POST
-        Path: /api/v1/user/logout
+        Path: /api/v1/users/logout
         Content-Type: application/json
         ```
 
@@ -112,7 +112,7 @@ I will be glad to explore the API, contribute to its development, or use it as a
 
         ```http
         Method: POST
-        Path: /api/v1/user/refreshtoken
+        Path: /api/v1/users/refreshtoken
         Content-Type: application/json
         Set-Cookie: jwt-refresh=string; Path=/api/v1/user/refreshtoken; Expires=Date; HttpOnly; Secure
         Body:
@@ -141,7 +141,7 @@ I will be glad to explore the API, contribute to its development, or use it as a
         }
         ```
 
-> [!IMPORTANT] > **The endpoints below needs Authorization header as JWT token.**
+> [!IMPORTANT] > **The endpoints below need the Authorization header as a JWT token.**
 
 -   ### User Profile Management Endpoints
 
@@ -151,7 +151,7 @@ I will be glad to explore the API, contribute to its development, or use it as a
 
             ```http
             Method: GET
-            Path: /api/v1/user/:userId
+            Path: /api/v1/users/:userId
             Content-Type: application/json
             Authorization: string
             ```
@@ -174,7 +174,7 @@ I will be glad to explore the API, contribute to its development, or use it as a
 
             ```http
             Method: PUT
-            Path: /api/v1/user/:userId
+            Path: /api/v1/users/:userId
             Content-Type: application/json
             Authorization: string
             Body:
@@ -205,7 +205,7 @@ I will be glad to explore the API, contribute to its development, or use it as a
 
             ```http
             Method: GET
-            Path: /api/v1/user/address/:userId
+            Path: /api/v1/users/:userId/addresses
             Content-Type: application/json
             Authorization: string
             ```
@@ -235,7 +235,7 @@ I will be glad to explore the API, contribute to its development, or use it as a
 
             ```http
             Method: POST
-            Path: /api/v1/user/address/:userId
+            Path: /api/v1/users/:userId/addresses
             Content-Type: application/json
             Authorization: string
             Body:
@@ -272,7 +272,7 @@ I will be glad to explore the API, contribute to its development, or use it as a
 
             ```http
             Method: PUT
-            Path: /api/v1/user/address/:userId?addressId=string
+            Path: /api/v1/users/:userId/addresses?addressId=string
             Content-Type: application/json
             Authorization: string
             Body:
@@ -304,7 +304,7 @@ I will be glad to explore the API, contribute to its development, or use it as a
             ```http
             Method: GET
             Path: /api/v1/catalog
-            ?Optional Query Params:
+            Queries:
             {
                 "category": "'cardio' | 'free-weights' | 'machines'",
                 "sort_by": "'asc' | 'desc'",
