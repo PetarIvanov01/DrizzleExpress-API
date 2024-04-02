@@ -1,4 +1,5 @@
 import { db } from '../../../config/database';
+import { DrizzleError, and, eq } from 'drizzle-orm';
 
 import {
     order_info,
@@ -10,7 +11,6 @@ import {
 
 import { getUserById } from './getUser';
 import { Order } from '../../schemas/orderSchema';
-import { DrizzleError, and, eq } from 'drizzle-orm';
 import takeUniqueOrThrow from '../../utils/takeUniqueOrThrow';
 
 export async function createOrder(
@@ -53,6 +53,7 @@ export async function createOrder(
                 }
             } catch (error) {
                 try {
+                    console.log(error);
                     tx.rollback();
                 } catch (error) {
                     throw new DrizzleError({

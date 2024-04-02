@@ -1,5 +1,7 @@
 {
-    "wathc":["src"],
-    "ext":".ts,.js",
+    "wathc": [
+        "src"
+    ],
+    "ext": ".ts,.js",
     "exec": "ts-node ./src/index.ts"
 }
