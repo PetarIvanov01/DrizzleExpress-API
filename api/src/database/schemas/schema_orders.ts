@@ -24,6 +24,7 @@ export const order_info = pgTable('order_info', {
         .references(() => user_profile.profile_id)
         .notNull(),
     total_price: numeric('price').notNull(),
+    order_desc: text('order_desc'),
     status_id: integer('status_id')
         .references(() => order_status.status_id)
         .default(1),
