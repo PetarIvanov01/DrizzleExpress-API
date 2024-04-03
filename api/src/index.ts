@@ -1,6 +1,9 @@
+import serverLogger from '../loggers/index';
+
 import 'dotenv/config';
 import './config/database';
 import express from 'express';
+
 import expressConfig from './config/express';
 import routerConfig from './config/router';
 import notFoundController from './core/controllers/errors/notFoundController';
@@ -16,10 +19,12 @@ async function main() {
         app.get('*', notFoundController);
 
         app.listen(process.env.PORT, () => {
-            console.log(`Server is running at ${process.env.PORT}`);
+            serverLogger.info(`Server is running at ${process.env.PORT}`);
         });
     } catch (error) {
-        console.log(error);
+        serverLogger.error(
+            `Error occurred during server initialization: ${error}`
+        );
         process.exit(1);
     }
 }
