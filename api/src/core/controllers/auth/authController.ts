@@ -22,7 +22,6 @@ export const loginController = wrapController(
         const { payload, refreshToken } = await loginService(extractedData);
 
         res.cookie(COOKIE_NAME, refreshToken, COOKIE_OPTIONS);
-
         res.status(200).json({ message: 'You are logged', payload });
     }
 );

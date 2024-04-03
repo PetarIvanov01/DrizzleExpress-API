@@ -1,5 +1,8 @@
+import dbLogger from '../../loggers/dbLogger';
+
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
+
 import * as user_schemas from '../database/schemas/schema_user';
 import * as product_shemas from '../database/schemas/schema_products';
 import * as orders_schemas from '../database/schemas/schema_orders';
@@ -18,9 +21,14 @@ export const client = new Client({
 const connectToDB = async () => {
     try {
         await client.connect();
-        console.log('DB connected');
+        dbLogger.info('Connected to the database.', {
+            host: process.env.DB_HOST,
+            env: process.env.NODE_ENV,
+            database: process.env.DB_NAME,
+            port: process.env.DB_PORT,
+        });
     } catch (err) {
-        console.error(err);
+        dbLogger.error(`Error connecting to the database: ${err}`);
         await client.end();
         process.exit(1);
     }

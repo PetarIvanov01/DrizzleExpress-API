@@ -1,9 +1,13 @@
 import { Express, urlencoded, static as _static } from 'express';
-import cors from 'cors';
+
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import bodyTrimmer from '../core/middlewares/trimBody';
-import { authJWT } from '../core/middlewares/authJWT';
+
+import cors from 'cors';
+
+import serverLogger from '../../loggers/index';
+import loggerMiddleware from '../core/middlewares/loggerMiddleware';
 
 export default function expressConfig(app: Express) {
     app.use(
@@ -21,5 +25,7 @@ export default function expressConfig(app: Express) {
 
     app.use(cookieParser());
 
-    app.use(authJWT());
+    app.use(loggerMiddleware());
+
+    serverLogger.info('Express app configured successfully.');
 }

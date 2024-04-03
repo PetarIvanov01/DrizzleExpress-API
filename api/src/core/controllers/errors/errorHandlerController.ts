@@ -3,6 +3,7 @@ import { AuthorizationError, ValidationError } from '../../utils/Errors';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import { UnauthorizedError } from 'express-jwt';
 import { DrizzleError } from 'drizzle-orm';
+import requestLogger from '../../../../loggers/requestLogger';
 
 interface ErrorPayload {
     type: string;
@@ -23,6 +24,7 @@ const errorHandler = (
         message: error.message ?? 'Unexpected error occur!',
         stack: error.stack || null,
     };
+
     if (error instanceof TokenExpiredError) {
         errorPayload.message = 'Token is expired!';
         status = 400;
@@ -43,6 +45,11 @@ const errorHandler = (
         errorPayload.message = error.message ?? 'Internel Error';
         status = 422;
     }
+
+    requestLogger.warning(`Incoming ${req.method} attempt failed.`, {
+        ...errorPayload,
+        _RequestId: req.requestId,
+    });
 
     return res.status(status).send(errorPayload);
 };
