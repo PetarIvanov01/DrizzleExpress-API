@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+import { authJWT } from '../middlewares/authJWT';
+
 import {
     getCurrentUser,
     updateCurrentUser,
@@ -15,11 +17,13 @@ import {
     getUserAddresses,
     updateUserAddress,
 } from '../controllers/profile/addressController';
-import validateBody from '../middlewares/zodBodyValidator';
 
+import validateBody from '../middlewares/zodBodyValidator';
 import { orderSchem } from '../schemas/orderSchema';
 
 const userRoute = Router();
+
+userRoute.use(authJWT());
 
 userRoute.route('/:userId').get(getCurrentUser).put(updateCurrentUser);
 
