@@ -8,15 +8,11 @@ import cors from 'cors';
 
 import serverLogger from '../../loggers/index';
 import loggerMiddleware from '../core/middlewares/loggerMiddleware';
+import { setCorsOptions } from './util';
 
 export default function expressConfig(app: Express) {
-    app.use(
-        cors({
-            credentials: true,
-            //Development only
-            origin: /^http:\/\/localhost:5173(?:\/.*)?$/,
-        })
-    );
+    app.use(cors(setCorsOptions(app)));
+
     app.use(bodyParser.json());
     app.use(urlencoded({ extended: true }));
 
