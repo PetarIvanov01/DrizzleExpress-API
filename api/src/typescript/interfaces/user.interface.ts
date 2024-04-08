@@ -25,3 +25,25 @@ export interface AuthToken {
 export interface RequestUserProp extends Request {
     user?: AuthToken;
 }
+
+export interface UserUpdateDataTypes {
+    shippingInfo?: {
+        city?: string;
+        address?: string;
+        country?: string;
+        postcode?: number;
+    };
+    personalInfo?: {
+        firstName?: string;
+        lastName?: string;
+        phoneNumber?: string;
+    };
+}
+
+export interface UserReturnData {
+    id: string;
+    email: string;
+    fullName: string;
+    password: string;
+    type: 'admin' | 'user';
+}

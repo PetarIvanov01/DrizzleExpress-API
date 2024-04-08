@@ -1,13 +1,9 @@
 import { user, user_profile } from '../../../database/schemas/schema_user';
 import { db } from '../../../config/database';
 import { eq, sql } from 'drizzle-orm';
+import { UserReturnData } from '../../../typescript/interfaces/user.interface';
 
-interface UserReturnData {
-    id: string;
-    email: string;
-    fullName: string;
-    password: string;
-}
+import takeUniqueOrThrow from '../../utils/takeUniqueOrThrow';
 
 export const getUserByEmail = async (
     email: string
@@ -19,19 +15,22 @@ export const getUserByEmail = async (
                 email: user.email,
                 password: user.password,
                 full_name: sql<string>`concat(${user_profile.first_name},' ',${user_profile.last_name})`,
+                type: user.type,
             })
             .from(user)
             .innerJoin(user_profile, eq(user.id, user_profile.user_id))
-            .where(eq(user.email, email));
+            .where(eq(user.email, email))
+            .then(takeUniqueOrThrow);
 
-        if (userRecord[0] === undefined) {
+        if (userRecord === undefined) {
             return null;
         }
         return {
-            id: userRecord[0].profile_id,
-            email: userRecord[0].email,
-            fullName: userRecord[0].full_name,
-            password: userRecord[0].password,
+            id: userRecord.profile_id,
+            email: userRecord.email,
+            fullName: userRecord.full_name,
+            password: userRecord.password,
+            type: userRecord.type,
         };
     } catch (error) {
         throw error;

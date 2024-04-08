@@ -1,21 +1,27 @@
+import { db } from '../../../config/database';
+import { eq } from 'drizzle-orm';
+
 import {
     user as user_,
     user_address,
     user_profile,
 } from '../../../database/schemas/schema_user';
-import { db } from '../../../config/database';
-import { UserRegisterData } from '../../../typescript/interfaces/user.interface';
-import { getUserByEmail, getUserById } from './getUser';
-import { eq } from 'drizzle-orm';
 
-//Todo make one function that will receive different fields and will query by them
+import { getUserByEmail, getUserById } from './getUser';
+import {
+    UserRegisterData,
+    UserUpdateDataTypes,
+} from '../../../typescript/interfaces/user.interface';
+
+import takeUniqueOrThrow from '../../utils/takeUniqueOrThrow';
+
 export const createUser = async (userValues: UserRegisterData) => {
     try {
         const existingUser = await getUserByEmail(userValues.email);
 
         if (existingUser) throw new Error('Email is taken');
 
-        const userId = await db.transaction(async (tx) => {
+        const userReturned = await db.transaction(async (tx) => {
             try {
                 const userRecord = await tx
                     .insert(user_)
@@ -23,8 +29,10 @@ export const createUser = async (userValues: UserRegisterData) => {
                         email: userValues.email,
                         password: userValues.password,
                     })
-                    .returning({ id: user_.id });
-                const user_id = userRecord[0].id;
+                    .returning({ id: user_.id, type: user_.type })
+                    .then(takeUniqueOrThrow);
+
+                const user_id = userRecord.id;
 
                 const userProfile = await tx
                     .insert(user_profile)
@@ -34,13 +42,18 @@ export const createUser = async (userValues: UserRegisterData) => {
                         last_name: userValues.otherInfo.lastName,
                         phone_number: userValues.otherInfo.phoneNumber,
                     })
-                    .returning();
+                    .returning()
+                    .then(takeUniqueOrThrow);
 
                 await tx
                     .insert(user_address)
-                    .values({ user_id: userProfile[0].profile_id });
+                    .values({ user_id: userProfile.profile_id });
 
-                return userProfile[0].profile_id;
+                return {
+                    userId: userProfile.profile_id,
+                    type: userRecord.type,
+                    fullName: `${userProfile.first_name} ${userProfile.last_name}`,
+                };
             } catch (error) {
                 console.log(error);
                 tx.rollback();
@@ -50,29 +63,14 @@ export const createUser = async (userValues: UserRegisterData) => {
 
         return {
             email: userValues.email,
-            fullName: userValues.otherInfo.firstName
-                .concat(' ')
-                .concat(userValues.otherInfo.lastName),
-            id: userId,
+            fullName: userReturned.fullName,
+            id: userReturned.userId,
+            type: userReturned.type,
         };
     } catch (error) {
         throw error;
     }
 };
-
-interface UserUpdateDataTypes {
-    shippingInfo?: {
-        city?: string;
-        address?: string;
-        country?: string;
-        postcode?: number;
-    };
-    personalInfo?: {
-        firstName?: string;
-        lastName?: string;
-        phoneNumber?: string;
-    };
-}
 
 export const updateUser = async (userId: string, body: UserUpdateDataTypes) => {
     try {

@@ -23,6 +23,7 @@ const loginService = async (userData: UserLoginData) => {
             id: user.id,
             fullName: user.fullName,
             email: user.email,
+            type: user.type,
         };
 
         const token = await signJWT(payload);
