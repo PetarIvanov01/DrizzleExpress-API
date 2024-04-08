@@ -92,7 +92,9 @@ export function checkValidQueryParams(
             (result as any)[key] = queries[key];
         }
     }
+    if (result.price?.from || result.price?.from) {
+        sanytizePrice(result);
+    }
 
-    sanytizePrice(result);
     return result;
 }
