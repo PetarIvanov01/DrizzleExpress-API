@@ -4,6 +4,7 @@ export interface Payload {
     id: string;
     email: string;
     fullName: string;
+    type: 'admin' | 'user';
 }
 
 const privateKey = process.env.JWT_SECRET as Secret;
@@ -17,7 +18,7 @@ export function signJWT(payload: Payload): Promise<string> {
             {
                 expiresIn: '15min',
                 algorithm: 'HS256',
-                issuer: JSON.stringify(payload.id),
+                issuer: payload.id,
             },
             (err, encoded) => {
                 if (err) {
@@ -38,7 +39,7 @@ export function signJWT_Refresh(payload: Payload): Promise<string> {
             {
                 expiresIn: '24h',
                 algorithm: 'HS256',
-                issuer: JSON.stringify(payload.id),
+                issuer: payload.id,
             },
             (err, encoded) => {
                 if (err) {
@@ -51,30 +52,18 @@ export function signJWT_Refresh(payload: Payload): Promise<string> {
     });
 }
 
-export function verifyJWT(token: string): Payload {
-    try {
-        const decoded = jwt.verify(token, privateKey) as Payload;
+function withVerifyJWT(verifyKey: Secret) {
+    return (token: string): Payload => {
+        const decoded = jwt.verify(token, verifyKey) as Payload;
 
         return {
             email: decoded.email,
             id: decoded.id,
             fullName: decoded.fullName,
+            type: decoded.type,
         };
-    } catch (error: any) {
-        throw new Error('Not authorozied!');
-    }
+    };
 }
 
-export function verifyJWT_Refresh(token: string): Payload {
-    try {
-        const payload = jwt.verify(token, refreshKey) as Payload;
-
-        return {
-            email: payload.email,
-            id: payload.id,
-            fullName: payload.fullName,
-        };
-    } catch (error: any) {
-        throw error;
-    }
-}
+export const verifyJWT = withVerifyJWT(privateKey);
+export const verifyJWT_Refresh = withVerifyJWT(refreshKey);
