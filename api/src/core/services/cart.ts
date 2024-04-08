@@ -10,7 +10,7 @@ type Product =
           category_id: number;
           product_id: string;
           title: string;
-          price: string;
+          price: number;
           image: string | null;
           quantity?: number;
           type: 'cardio' | 'machines' | 'free-weights';
