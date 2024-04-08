@@ -59,12 +59,10 @@ export const getCatalogData = async (search: SearchQuery) => {
         }
 
         if (price?.from) {
-            //@ts-ignore
             table1Conditions.push(gte(products.price, price.from));
         }
 
         if (price?.to) {
-            // @ts-ignore
             table1Conditions.push(lte(products.price, price.to));
         }
 
