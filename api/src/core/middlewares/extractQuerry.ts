@@ -11,15 +11,21 @@ export default function querryMiddlware(
 ): void {
     try {
         const definedQueries: DefinedQueriesType = {};
+        req.searchBy = {};
 
-        WORKING_QUERIES.forEach((query) => {
+        if (Object.values(req.query).length === 0) {
+            return next();
+        }
+
+        for (const query of WORKING_QUERIES) {
             const value = req.query[query] as string | undefined;
             if (value !== undefined) {
                 definedQueries[query] = value.trim();
             }
-        });
+        }
 
         const sanitizedQueries = checkValidQueryParams(definedQueries);
+
         req.searchBy = sanitizedQueries;
 
         return next();
