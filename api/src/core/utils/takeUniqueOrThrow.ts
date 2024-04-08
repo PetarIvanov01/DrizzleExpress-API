@@ -1,6 +1,5 @@
 function takeUniqueOrThrow<T extends any[]>(values: T): T[number] {
-    if (values.length !== 1)
-        throw new Error('Found non unique or inexistent value');
+    if (values.length !== 1) return;
     return values[0]!;
 }
 
