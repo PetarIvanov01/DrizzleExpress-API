@@ -1,8 +1,8 @@
-import serverLogger from '../loggers/index';
-
+import express from 'express';
 import 'dotenv/config';
 import './config/database';
-import express from 'express';
+
+import serverLogger from '../loggers/index';
 
 import expressConfig from './config/express';
 import routerConfig from './config/router';
