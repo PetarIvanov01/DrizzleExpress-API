@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { AuthorizationError } from '../utils/Errors';
-import { db } from '../../config/database';
+import { AuthorizationError } from '../../utils/Errors';
+import { db } from '../../../config/database';
 export default async function isAdmin(
     req: Request,
     res: Response,
@@ -20,6 +20,7 @@ export default async function isAdmin(
                 type: true,
             },
         });
+
         if (user?.type === 'admin') {
             return next();
         }
