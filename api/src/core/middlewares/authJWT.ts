@@ -15,7 +15,7 @@ export function authJWT() {
         algorithms: ['HS256'],
     });
 }
-// TODO :: Check for admin rights
+
 function TokenGetter(req: Request): string | Promise<string> | undefined {
     if (req.headers.authorization) {
         return req.headers.authorization;

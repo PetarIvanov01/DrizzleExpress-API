@@ -51,7 +51,7 @@ const errorHandler = (
         _RequestId: req.requestId,
     });
 
-    return res.status(status).send(errorPayload);
+    return res.status(status).json(errorPayload);
 };
 
 export default errorHandler;
