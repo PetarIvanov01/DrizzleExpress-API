@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import { authJWT } from '../middlewares/authJWT';
+import isOwner from '../middlewares/guards/isOwner';
 
 import {
     getCurrentUser,
@@ -23,18 +24,22 @@ import { orderSchem } from '../schemas/orderSchema';
 
 const userRoute = Router();
 
-userRoute.use(authJWT());
-
-userRoute.route('/:userId').get(getCurrentUser).put(updateCurrentUser);
+userRoute
+    .route('/:userId')
+    .all(authJWT(), isOwner)
+    .get(getCurrentUser)
+    .put(updateCurrentUser);
 
 userRoute
     .route('/:userId/addresses')
+    .all(authJWT(), isOwner)
     .get(getUserAddresses)
     .post(addAddressToUser)
     .put(updateUserAddress);
 
 userRoute
     .route('/:userId/orders')
+    .all(authJWT(), isOwner)
     .get(getUserOrders)
     .post(validateBody(orderSchem), createUserOrder);
 
