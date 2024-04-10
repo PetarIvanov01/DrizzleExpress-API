@@ -24,7 +24,7 @@ export const user = pgTable('user', {
 export const user_profile = pgTable('user_profile', {
     profile_id: uuid('profile_id').primaryKey().defaultRandom(),
     user_id: uuid('user_id')
-        .references(() => user.id)
+        .references(() => user.id, { onDelete: 'cascade' })
         .notNull(),
     first_name: varchar('first_name', { length: 100 }).notNull(),
     last_name: varchar('last_name', { length: 100 }).notNull(),
@@ -34,7 +34,7 @@ export const user_profile = pgTable('user_profile', {
 export const user_address = pgTable('user_address', {
     address_id: serial('address_id').primaryKey(),
     user_id: uuid('user_id')
-        .references(() => user_profile.profile_id)
+        .references(() => user_profile.profile_id, { onDelete: 'cascade' })
         .notNull(),
     country: varchar('country', { length: 100 }),
     city: varchar('city', { length: 100 }),

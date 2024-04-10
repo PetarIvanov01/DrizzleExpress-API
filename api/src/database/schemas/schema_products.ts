@@ -19,7 +19,7 @@ export const products = pgTable('products', {
     product_id: uuid('product_id').primaryKey().defaultRandom(),
     category_id: integer('category_id')
         .notNull()
-        .references(() => categories.category_id),
+        .references(() => categories.category_id, { onDelete: 'set null' }),
     title: varchar('title', { length: 150 }).notNull(),
     price: numeric('price').$type<number>().notNull(),
     description: text('description').notNull(),
