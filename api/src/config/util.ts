@@ -1,14 +1,12 @@
-import { Express } from 'express';
 import { CorsOptions } from 'cors';
 
-export function setCorsOptions(app: Express) {
+export function setCorsOptions(): CorsOptions {
     const corsOpt: CorsOptions = {
         credentials: true,
     };
 
-    if (app.get('env') === 'development') {
+    if (process.env.NODE_ENV?.includes('development')) {
         corsOpt.origin = /^http:\/\/localhost:5173(?:\/.*)?$/;
     }
-
     return corsOpt;
 }

@@ -12,7 +12,7 @@ import { setCorsOptions } from './util';
 import serverLogger from '../../loggers/index';
 
 export default function expressConfig(app: Express) {
-    app.use(cors(setCorsOptions(app)));
+    app.use(cors(setCorsOptions()));
 
     app.use(rateLimmiter());
 
