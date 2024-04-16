@@ -1,0 +1,48 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1711794947410,
+      "tag": "0000_perfect_shriek",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1712057731974,
+      "tag": "0001_stormy_red_skull",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1712592189492,
+      "tag": "0002_premium_purifiers",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1712665849807,
+      "tag": "0003_parallel_albert_cleary",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1713286087875,
+      "tag": "0004_chubby_wilson_fisk",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1713286909390,
+      "tag": "0005_amused_unicorn",
+      "breakpoints": true
+    }
+  ]
+}

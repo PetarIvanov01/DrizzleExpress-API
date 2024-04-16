@@ -1,0 +1,2 @@
+ALTER TABLE "order_info" ALTER COLUMN "order_date" SET DEFAULT '2024-04-16T17:01:49.367Z';--> statement-breakpoint
+ALTER TABLE "user" ALTER COLUMN "created_at" SET DEFAULT '2024-04-16T17:01:49.366Z';
