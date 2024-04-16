@@ -18,6 +18,8 @@ const options: ClientConfig = ENV?.includes('production')
           password: process.env.DB_PASSWORD,
           port: parseInt(process.env.DB_PORT || '5432'),
       };
+console.log(options);
+
 export const client = new Client(options);
 
 const doMigrate = async () => {
