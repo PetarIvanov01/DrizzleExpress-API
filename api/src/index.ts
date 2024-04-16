@@ -24,6 +24,12 @@ async function main() {
         app.listen(process.env.PORT, () => {
             serverLogger.info(`Server is running at ${process.env.PORT}`);
         });
+
+        const PORT = parseInt(process.env.PORT || '5000');
+
+        app.listen(PORT, '0.0.0.0', () => {
+            serverLogger.info(`Server is running at http://0.0.0.0:${PORT}`);
+        });
     } catch (error) {
         serverLogger.error(
             `Error occurred during server initialization: ${error}`
