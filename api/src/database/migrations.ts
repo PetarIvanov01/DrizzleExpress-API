@@ -1,11 +1,24 @@
 import 'dotenv/config';
-import { Client } from 'pg';
+import { Client, ClientConfig } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 
-const client = new Client({
-    connectionString: `postgres://my_db_wqey_user:rhmCdivBLuBwqDCM74fTgBFC7MjaIW4g@dpg-cof6ila1hbls73976sgg-a.frankfurt-postgres.render.com/my_db_wqey`,
-});
+const ENV = process.env.NODE_ENV;
+const options: ClientConfig = ENV?.includes('production')
+    ? {
+          connectionString: process.env.DB_CONN,
+          ssl: {
+              rejectUnauthorized: false,
+          },
+      }
+    : {
+          host: 'localhost',
+          user: process.env.DB_USER,
+          database: process.env.DB_NAME,
+          password: process.env.DB_PASSWORD,
+          port: parseInt(process.env.DB_PORT || '5432'),
+      };
+export const client = new Client(options);
 
 const doMigrate = async () => {
     await client.connect();
