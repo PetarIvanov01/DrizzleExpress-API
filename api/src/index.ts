@@ -17,7 +17,7 @@ async function main() {
         routerConfig(app);
 
         app.get('/health', (req: Request, res: Response) => {
-            res.send('Welcome!');
+            res.status(2000).send('Welcome!');
         });
         app.get('*', notFoundController);
 
