@@ -21,10 +21,6 @@ async function main() {
         });
         app.get('*', notFoundController);
 
-        app.listen(process.env.PORT, () => {
-            serverLogger.info(`Server is running at ${process.env.PORT}`);
-        });
-
         const PORT = parseInt(process.env.PORT || '5000');
 
         app.listen(PORT, '0.0.0.0', () => {
