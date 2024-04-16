@@ -10,6 +10,7 @@ import notFoundController from './core/controllers/errors/notFoundController';
 
 main();
 async function main() {
+    const PORT = parseInt(process.env.PORT || '5000');
     const app = express();
 
     try {
@@ -17,14 +18,12 @@ async function main() {
         routerConfig(app);
 
         app.get('/health', (req: Request, res: Response) => {
-            res.status(2000).send('Welcome!');
+            res.status(200).send('Welcome!');
         });
         app.get('*', notFoundController);
 
-        const PORT = parseInt(process.env.PORT || '5000');
-
-        app.listen(PORT, '0.0.0.0', () => {
-            serverLogger.info(`Server is running at http://0.0.0.0:${PORT}`);
+        app.listen(PORT, () => {
+            serverLogger.info(`Server is running at PORT: ${PORT}`);
         });
     } catch (error) {
         serverLogger.error(
