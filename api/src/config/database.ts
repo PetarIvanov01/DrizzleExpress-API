@@ -52,8 +52,15 @@ export const db = drizzle(client, {
 });
 
 if (IS_PRODUCTION) {
-    migrate(db, {
-        migrationsFolder: 'drizzle',
-    });
+    (async () => {
+        try {
+            await migrate(db, {
+                migrationsFolder: 'drizzle',
+            });
+        } catch (error) {
+            console.log(error);
+            process.exit(1);
+        }
+    })();
     dbLogger.info('Database tables loaded.');
 }
