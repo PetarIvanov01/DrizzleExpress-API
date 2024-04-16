@@ -16,10 +16,6 @@ async function main() {
     try {
         expressConfig(app);
         routerConfig(app);
-
-        app.get('/health', (req: Request, res: Response) => {
-            res.status(200).send('Welcome!');
-        });
         app.get('*', notFoundController);
 
         app.listen(PORT, () => {
