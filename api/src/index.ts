@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import 'dotenv/config';
 import './config/database';
 
@@ -16,6 +16,9 @@ async function main() {
         expressConfig(app);
         routerConfig(app);
 
+        app.get('/health', (req: Request, res: Response) => {
+            res.send('Welcome!');
+        });
         app.get('*', notFoundController);
 
         app.listen(process.env.PORT, () => {

@@ -16,6 +16,9 @@ export const client = new Client({
     user: process.env.DB_USER,
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
+    ssl: {
+        rejectUnauthorized: false,
+    },
     port: parseInt(process.env.DB_PORT || '5432'),
 });
 
