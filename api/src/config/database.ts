@@ -8,6 +8,7 @@ import * as product_shemas from '../database/schemas/schema_products';
 import * as orders_schemas from '../database/schemas/schema_orders';
 
 export const client = new Client({
+    connectionString: process.env.DB_CONN,
     host:
         process.env.NODE_ENV === 'production'
             ? process.env.DB_HOST
