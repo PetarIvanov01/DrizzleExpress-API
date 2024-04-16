@@ -4,7 +4,7 @@
   "description": "Rest API for CRUD operation, user authentication and authorization.",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && set NODE_ENV=production && npm run copy-public && npm run copy-drizzle && node ./dist/src/index.js",
+    "start": "tsc && set NODE_ENV=production && npm run copy-public && npm run copy-drizzle && set HOST=0.0.0.0 && node ./dist/src/index.js",
     "dev": "set NODE_ENV=development && nodemon -L -e ts --exec",
     "dev:docker": "docker-compose down && docker-compose up --detach --scale api=0",
     "migration:generate": "drizzle-kit generate:pg --schema=./src/database/schemas/*",

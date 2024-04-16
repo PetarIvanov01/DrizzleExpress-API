@@ -26,7 +26,6 @@ const options: ClientConfig = IS_PRODUCTION
           password: process.env.DB_PASSWORD,
           port: parseInt(process.env.DB_PORT || '5432'),
       };
-console.log(options);
 
 export const client = new Client(options);
 
