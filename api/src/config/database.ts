@@ -50,17 +50,3 @@ connectToDB();
 export const db = drizzle(client, {
     schema: { ...user_schemas, ...product_shemas, ...orders_schemas },
 });
-
-if (IS_PRODUCTION) {
-    (async () => {
-        try {
-            await migrate(db, {
-                migrationsFolder: 'drizzle',
-            });
-        } catch (error) {
-            console.log(error);
-            process.exit(1);
-        }
-    })();
-    dbLogger.info('Database tables loaded.');
-}
