@@ -4,12 +4,13 @@
   "description": "Rest API for CRUD operation, user authentication and authorization.",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node ./dist/src/index.js",
+    "start": "tsc && set NODE_ENV=production && npm run copy-public && node ./dist/src/index.js ",
     "dev": "set NODE_ENV=development && nodemon -L -e ts --exec",
     "dev:docker": "docker-compose down && docker-compose up --detach --scale api=0",
     "migration:generate": "drizzle-kit generate:pg --schema=./src/database/schemas/*",
     "migration:push": "node -r esbuild-register src/database/migrations.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "copy-public": "copyfiles  ./public/**/* ./dist"
   },
   "repository": {
     "type": "git",
@@ -47,6 +48,7 @@
     "@types/jsonwebtoken": "^9.0.3",
     "@types/node": "^20.8.6",
     "@types/pg": "^8.10.5",
+    "copyfiles": "^2.4.1",
     "drizzle-kit": "^0.20.14",
     "nodemon": "^3.0.1",
     "prettier": "3.2.4",
