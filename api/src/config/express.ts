@@ -12,6 +12,7 @@ import { setCorsOptions } from './util';
 import serverLogger from '../../loggers/index';
 
 export default function expressConfig(app: Express) {
+    app.set('trust proxy', 1);
     app.use(cors(setCorsOptions()));
 
     app.use(rateLimmiter());
