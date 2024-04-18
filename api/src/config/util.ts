@@ -6,8 +6,8 @@ export function setCorsOptions(): CorsOptions {
         origin: /^http:\/\/localhost:5173(?:\/.*)?$/,
     };
 
-    if (process.env.NODE_ENV?.includes('development')) {
-        corsOpt.origin = /^http:\/\/localhost:5173(?:\/.*)?$/;
+    if (process.env.NODE_ENV?.includes('production')) {
+        corsOpt.origin = /^https:\/\/fitness-store-a1206.web.app(?:\/.*)?$/;
     }
     return corsOpt;
 }
