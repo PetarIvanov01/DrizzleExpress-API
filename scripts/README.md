@@ -42,7 +42,7 @@ Example:
 
 ```bash
 export ADMIN="admin@admin.bg"
-export PRODUCTION_URL="https://drizzleexpress-api.onrender.com/api/v1/catalog"
+export PRODUCTION_URL="https://production.web/api/v1/catalog"
 export LOCAL_URL="http://localhost:5000/api/v1/catalog"
 ```
 
