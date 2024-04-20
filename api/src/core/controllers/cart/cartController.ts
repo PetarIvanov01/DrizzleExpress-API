@@ -1,24 +1,18 @@
 import { Request, Response } from 'express';
-import { getCartDataService } from '../../services/cart';
+import { getCartService } from '../../services/cart';
+import { CartBody } from '../../schemas/cartBodySchema';
 
-export interface CartItems {
-    [key: string]: number;
-}
-
-export const getCartDataController = async (req: Request, res: Response) => {
+export const getCartController = async (req: Request, res: Response) => {
     try {
-        const itemsId = req.cookies['cart-cookie'];
+        const payload = req.body as CartBody;
 
-        if (typeof itemsId !== 'string') {
-            return res.status(204).json([]);
+        if (payload.length === 0) {
+            return res.status(204).json({ cart: [] });
         }
 
-        const parsedItemsObjectIds = JSON.parse(itemsId);
-        const cartItems = parsedItemsObjectIds.cartItems as CartItems;
+        const items = await getCartService(payload);
 
-        const items = await getCartDataService(cartItems);
-
-        res.status(200).send(items);
+        res.status(200).json({ cart: items });
     } catch (error: unknown) {
         throw error;
     }
