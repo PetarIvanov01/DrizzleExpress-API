@@ -1,24 +1,34 @@
 import { SQLWrapper, and, asc, desc, eq, gte, lte, sql } from 'drizzle-orm';
-
 import { SearchQuery } from '../../typescript/interfaces/query.interface';
-import IFile from '../../typescript/interfaces/multer.interface';
+
+import uploadImage from '../utils/uploadImg';
 
 import { db } from '../../config/database';
 import { categories, products } from '../../database/schemas/schema_products';
 import { NewProductType } from '../../typescript/types/catalog.type';
 
-export const insertCatalogData = async (data: NewProductType, file: IFile) => {
+export const insertCatalogData = async (
+    data: NewProductType,
+    file: Express.Multer.File
+) => {
     try {
-        const createdData = await db
-            .insert(products)
-            .values({
-                category_id: data.category_id,
-                description: data.description,
-                price: data.price,
-                title: data.title,
-                image: file.filename,
-            })
-            .returning();
+        const createdData = await db.transaction(async (tx) => {
+            const imageUrl = await uploadImage(file as Express.Multer.File);
+
+            const created = tx
+                .insert(products)
+                .values({
+                    category_id: data.category_id,
+                    description: data.description,
+                    price: data.price,
+                    title: data.title,
+                    image: imageUrl,
+                })
+                .returning();
+
+            return created;
+        });
+
         return createdData;
     } catch (error) {
         throw error;
