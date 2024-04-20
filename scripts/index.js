@@ -7,7 +7,7 @@ let HTTP_URL = process.env.NODE_ENV.includes("production")
   ? process.env.PRODUCTION_ULR
   : process.env.LOCAL_URL;
 
-const ADMIN_EMAIL = process.env.ADMIN;
+const ADMIN_EMAIL = process.env.ADMIN || "admin@admin.bg";
 
 const mockData = JSON.parse(
   readFileSync("./products.json", {
