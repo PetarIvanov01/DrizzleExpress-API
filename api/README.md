@@ -17,6 +17,8 @@ I will be glad to explore the API, contribute to its development, or use it as a
     -   [Get User Addresses Endpoint](#get-user-addresses-endpoint)
     -   [Create/Add User Address Endpoint](#createadd-user-address-endpoint)
     -   [Update User Address Endpoint](#update-user-address-endpoint)
+    -   [Get User Orders/Order Endpoint](#get-user-orders-endpoint)
+    -   [Create Order Endpoint](#create-order-endpoint)
 -   [Catalog Management Endpoints](#catalog-management-endpoints)
     -   [Get Catalog Endpoint](#get-catalog-endpoint)
     -   [Get Product Endpoint](#get-product-endpoint)
@@ -50,99 +52,102 @@ I will be glad to explore the API, contribute to its development, or use it as a
                     "id": "string",
                     "fullName": "string",
                     "email": "string",
-                    "token": "string"
+                    "token": "string",
+                    "type": "'admin' | 'user'"
                 }
             }
             ```
 
--   #### Register Endpoint
+    -   #### Register Endpoint
 
-    -   Request Example:
-
-        ```http
-        Method: POST
-        Path: /api/v1/users/sign-up
-        Content-Type: application/json
-        Body:
-        {
-            "email": "string",
-            "password": "string",
-            "rePassword": "string",
-            "firstName": "string",
-            "lastName": "string",
-            "phoneNumber": "string"
-        }
-        ```
-
-    -   Response Example:
-
-        ```http
-        Body: {
-            "message": "You are registered",
-            "payload": {
-            "email": "string",
-            "fullName": "string",
-            "id": "string"
-            "token": "string"
-        }
-        ```
-
--   #### Logout Endpoint
-
-    -   Request Example:
-
-        ```http
-        Method: POST
-        Path: /api/v1/users/logout
-        Content-Type: application/json
-        ```
-
-    -   Response Example:
-
-        ```http
-        Body:
-        {
-            "message": "Logout successful"
-        }
-        ```
-
--   #### Refresh Token Endpoint
-
-    -   Request Example:
-
-        ```http
-        Method: POST
-        Path: /api/v1/users/refreshtoken
-        Content-Type: application/json
-        Set-Cookie: jwt-refresh=string; Path=/api/v1/user/refreshtoken; Expires=Date; HttpOnly; Secure
-        Body:
-        {
-            "email": "string",
-            "password": "string",
-            "rePassword": "string",
-            "firstName": "string",
-            "lastName": "string",
-            "phoneNumber": "string"
-        }
-        ```
-
-    -   Response Example:
-
-        ```http
-        Body:
-        {
-            "message": "Tokens successfully refreshed.",
-            "payload": {
+        -   Request Example:
+    
+            ```http
+            Method: POST
+            Path: /api/v1/users/sign-up
+            Content-Type: application/json
+            Body:
+            {
+                "email": "string",
+                "password": "string",
+                "rePassword": "string",
+                "firstName": "string",
+                "lastName": "string",
+                "phoneNumber": "string"
+            }
+            ```
+    
+        -   Response Example:
+    
+            ```http
+            Body: {
+                "message": "You are registered",
+                "payload": {
                 "email": "string",
                 "fullName": "string",
                 "id": "string"
-                "token": "string"
+                "token": "string",
+                "type": "'admin' | 'user'"
             }
-        }
-        ```
+            ```
 
-> [!IMPORTANT] > **The endpoints below need the Authorization header as a JWT token.**
+    -   #### Logout Endpoint
+    
+        -   Request Example:
+    
+            ```http
+            Method: POST
+            Path: /api/v1/users/logout
+            Content-Type: application/json
+            ```
+    
+        -   Response Example:
+    
+            ```http
+            Body:
+            {
+                "message": "Logout successful"
+            }
+            ```
 
+    -   #### Refresh Token Endpoint
+    
+        -   Request Example:
+    
+            ```http
+            Method: POST
+            Path: /api/v1/users/refreshtoken
+            Content-Type: application/json
+            Set-Cookie: jwt-refresh=string; Path=/api/v1/user/refreshtoken; Expires=Date; HttpOnly; Secure
+            Body:
+            {
+                "email": "string",
+                "password": "string",
+                "rePassword": "string",
+                "firstName": "string",
+                "lastName": "string",
+                "phoneNumber": "string"
+            }
+            ```
+    
+        -   Response Example:
+    
+            ```http
+            Body:
+            {
+                "message": "Tokens successfully refreshed.",
+                "payload": {
+                    "email": "string",
+                    "fullName": "string",
+                    "id": "string"
+                    "token": "string"
+                }
+            }
+            ```
+            
+> [!IMPORTANT]
+> **The endpoints below need the Authorization header as a JWT token.**
+> **They are protected so only the owner can perform actions!**
 -   ### User Profile Management Endpoints
 
     -   #### Get Profile Endpoint
@@ -294,6 +299,101 @@ I will be glad to explore the API, contribute to its development, or use it as a
                 }
             }
             ```
+            
+    -   #### Get User Orders Endpoint
+
+        -   Request Example:
+
+            ```http
+            Method: GET
+            Path: /api/v1/users/:userId/orders
+            Content-Type: application/json
+            Query: orderId
+            Authorization: string
+            ```
+
+        -   Response Example with provided orderId/ full single order:
+
+            ```http
+            Body:
+            {
+                "orderId": "string",
+                "totalPrice": "string",
+                "status_name": "string",
+                "createdAt": "Date",
+                "userProfile": {
+                    "userId": "string",
+                    "fullName": "string",
+                    "phoneNumber": "string"
+                },
+                "userAddress": {
+                    "country": "string",
+                    "city": "string",
+                    "address": "string",
+                    "postcode": "number"
+                },
+                "orderedProducts": {
+                    "productId": "string",
+                    "quantity": "number",
+                    "subtotal": "string"
+                }[]
+            }
+            ```
+
+
+        -   Response Example without orderId/ all user orders:
+
+            ```http
+            Body:
+            {
+                "user_id": "string",
+                "status_id": "number | null"
+                "order_id": "string",
+                "total_price": "string",
+                "order_desc": "string | null",
+                "order_date": "Date"
+            }[]
+            ```
+
+    -   #### Create Order Endpoint
+
+        -   Request Example:
+    
+            ```http
+            Method: POST
+            Path: /api/v1/users/:userId/orders
+            Content-Type: application/json
+            Authorization: string
+            Body:
+            {
+                "orderInfo": {
+                    "_userId": "string",
+                    "orderAddress": {
+                        "country": "string",
+                        "city": "string",
+                        "address": "string",
+                        "postcode": "string",
+                    },
+                    "totalPrice": "number"
+                },
+                "orderProducts": {
+                    "quantity": "number",
+                    "subtotal": "number",
+                    "_productId": "string"
+                }[]
+            }
+            ```
+    
+        -   Response Example:
+    
+            ```http
+            Status: 201
+            Body:
+            {
+                "message": "Order sucessfully created",
+            }
+            ```
+
 
 -   ### Catalog Management Endpoints
 
@@ -363,41 +463,40 @@ I will be glad to explore the API, contribute to its development, or use it as a
 
 > [!IMPORTANT]
 > The endpoint below is restricted to administrators only. Users must have admin privileges to access this endpoint.
-
--   #### Create Product Endpoint
-
-    -   Request Example:
-
-        ```http
-        Method: POST
-        Path: /api/v1/catalog
-        Authorization: "string"
-        Content-Type: multipart/form-data
-        Body:
-        {
-            "email": "'string' /* Required for admin validation */"
-            "category_id": "number",
-            "description": "string",
-            "price": "string",
-            "title": "string",
-            "image": "file"
-        }
-        ```
-
-    -   Response Example:
-
-        ```http
-        Body:
-        {
-            "result": {
+  -   ### Create Product Endpoint
+    
+        -   Request Example:
+    
+            ```http
+            Method: POST
+            Path: /api/v1/catalog
+            Authorization: "string"
+            Content-Type: multipart/form-data
+            Body:
+            {
+                "email": "'string' /* Required for admin validation */"
                 "category_id": "number",
                 "description": "string",
                 "price": "string",
                 "title": "string",
-                "image": "file",
+                "image": "file"
             }
-        }
-        ```
+            ```
+    
+        -   Response Example:
+    
+            ```http
+            Body:
+            {
+                "result": {
+                    "category_id": "number",
+                    "description": "string",
+                    "price": "string",
+                    "title": "string",
+                    "image": "file",
+                }
+            }
+            ```
 
 <!--
 ## Authorization
