@@ -16,7 +16,7 @@ const catalogRoute = Router();
 catalogRoute
     .route('/')
     .get(querryMiddlware, getCatalogController)
-    .post(isAdmin, fileExtractionMiddlawere('image'), insertCatalogController)
+    .post(fileExtractionMiddlawere('image'), isAdmin, insertCatalogController)
     .delete(isAdmin, deleteItemFromCatalog);
 
 catalogRoute.get('/:productId', getProductByIdController);
