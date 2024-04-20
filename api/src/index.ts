@@ -7,6 +7,7 @@ import serverLogger from '../loggers/index';
 import expressConfig from './config/express';
 import routerConfig from './config/router';
 import notFoundController from './core/controllers/errors/notFoundController';
+import checkHealthController from './core/controllers/health';
 
 main();
 async function main() {
@@ -14,8 +15,11 @@ async function main() {
     const app = express();
 
     try {
+        app.get('/health', checkHealthController);
+
         expressConfig(app);
         routerConfig(app);
+
         app.get('*', notFoundController);
 
         app.listen(PORT, () => {
