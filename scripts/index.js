@@ -1,8 +1,14 @@
+import "dotenv/config.js";
 import _fetch, { File } from "node-fetch";
 import getFiles from "./util.js";
 import { readFileSync } from "fs";
 
-const HTTP_URL = "http://localhost:5000/api/v1/catalog";
+let HTTP_URL = process.env.NODE_ENV.includes("production")
+  ? process.env.PRODUCTION_ULR
+  : process.env.LOCAL_URL;
+
+const ADMIN_EMAIL = process.env.ADMIN;
+
 const mockData = JSON.parse(
   readFileSync("./products.json", {
     encoding: "utf-8",
@@ -52,6 +58,7 @@ async function createFormData() {
       formData.set("title", data.title);
       formData.set("description", data.description);
       formData.set("price", data.price);
+      formData.set("email", ADMIN_EMAIL);
 
       await requester("POST", formData);
     }
