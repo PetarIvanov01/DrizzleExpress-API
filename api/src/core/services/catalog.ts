@@ -51,7 +51,7 @@ export const getCatalogData = async (search: SearchQuery) => {
         let queryBuilder = db
             .select({
                 product_id: products.product_id,
-                categoriy_id: products.category_id,
+                category_id: products.category_id,
                 title: products.title,
                 price: products.price,
                 description: products.description,
