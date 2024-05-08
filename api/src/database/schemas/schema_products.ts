@@ -7,6 +7,7 @@ import {
     uuid,
     integer,
 } from 'drizzle-orm/pg-core';
+
 import { user_profile } from './schema_user';
 
 export const categories = pgTable('categories', {
@@ -28,11 +29,15 @@ export const products = pgTable('products', {
 });
 
 export const review = pgTable('reviews', {
-    review_id: uuid('review_id').primaryKey().defaultRandom(),
-    product_id: uuid('product_id').references(() => products.product_id, {
-        onDelete: 'cascade',
-    }),
-    user_id: uuid('user_id').references(() => user_profile.profile_id),
-    rating: integer('rating').$type<1 | 2 | 3 | 4 | 5>().default(2),
+    review_id: uuid('review_id').primaryKey().defaultRandom().notNull(),
+    product_id: uuid('product_id')
+        .references(() => products.product_id, {
+            onDelete: 'cascade',
+        })
+        .notNull(),
+    user_id: uuid('user_id')
+        .references(() => user_profile.profile_id)
+        .notNull(),
+    rating: integer('rating').$type<1 | 2 | 3 | 4 | 5>().default(1).notNull(),
     review_text: text('review_text'),
 });
