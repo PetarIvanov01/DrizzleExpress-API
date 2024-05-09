@@ -1,11 +1,10 @@
-import { Response, Request, NextFunction } from 'express';
+import { Response, Request } from 'express';
 
 import {
     insertCatalogData,
-    getProductId,
     getCatalogData,
     _deleteData,
-} from '../../services/catalog';
+} from '../../services/productService/catalog';
 
 import { RequestWithQueryData } from '../../../typescript/interfaces/query.interface';
 import wrapController from '../../helpers/wrapperTryCatch';
@@ -32,21 +31,10 @@ export const getCatalogController = wrapController(
         let searchBy = req.searchBy || {};
         const values = await getCatalogData(searchBy);
 
-        res.json({
+        res.status(200).json({
             itemsLng: values.itemsLng,
             result: values.result,
         });
-    }
-);
-
-export const getProductByIdController = wrapController(
-    async (req: Request, res: Response) => {
-        const productId = req.params.productId;
-        if (!productId) return res.status(204).json({});
-
-        const result = await getProductId(productId);
-
-        res.status(200).json({ result });
     }
 );
 
@@ -55,7 +43,7 @@ export const deleteItemFromCatalog = wrapController(
         try {
             _deleteData();
 
-            res.json({
+            res.status(204).json({
                 message: 'Delete',
             });
         } catch (error) {
