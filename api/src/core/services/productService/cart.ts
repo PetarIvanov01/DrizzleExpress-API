@@ -1,9 +1,12 @@
-import takeUniqueOrThrow from '../utils/takeUniqueOrThrow';
+import takeUniqueOrThrow from '../../utils/takeUniqueOrThrow';
 
-import { db } from '../../config/database';
-import { categories, products } from '../../database/schemas/schema_products';
+import { db } from '../../../config/database';
+import {
+    categories,
+    products,
+} from '../../../database/schemas/schema_products';
 import { eq } from 'drizzle-orm';
-import { CartBody } from '../schemas/cartBodySchema';
+import { CartBody } from '../../zod-schemas/cartBodySchema';
 
 type Product = {
     category_id: number;
