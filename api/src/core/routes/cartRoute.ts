@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import validateBody from '../middlewares/zodBodyValidator';
-import { cartSchema } from '../schemas/cartBodySchema';
+import { cartSchema } from '../zod-schemas/cartBodySchema';
 
 import { getCartController } from '../controllers/cart/cartController';
 
