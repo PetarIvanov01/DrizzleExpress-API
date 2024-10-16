@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { getCartService } from '../../services/cart';
-import { CartBody } from '../../schemas/cartBodySchema';
+import { getCartService } from '../../services/productService/cart';
+import { CartBody } from '../../zod-schemas/cartBodySchema';
 
 export const getCartController = async (req: Request, res: Response) => {
     try {

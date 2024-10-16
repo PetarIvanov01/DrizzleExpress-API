@@ -1,11 +1,14 @@
 import { SQLWrapper, and, asc, desc, eq, gte, lte, sql } from 'drizzle-orm';
-import { SearchQuery } from '../../typescript/interfaces/query.interface';
+import { SearchQuery } from '../../../typescript/interfaces/query.interface';
 
-import uploadImage from '../utils/uploadImg';
+import uploadImage from '../../utils/uploadImg';
 
-import { db } from '../../config/database';
-import { categories, products } from '../../database/schemas/schema_products';
-import { NewProductType } from '../../typescript/types/catalog.type';
+import { db } from '../../../config/database';
+import {
+    categories,
+    products,
+} from '../../../database/schemas/schema_products';
+import { NewProductType } from '../../../typescript/types/catalog.type';
 
 export const insertCatalogData = async (
     data: NewProductType,
@@ -89,20 +92,6 @@ export const getCatalogData = async (search: SearchQuery) => {
             itemsLng: length,
             result: result.map((products) => ({ ...products, quantity: 1 })),
         };
-    } catch (error) {
-        throw error;
-    }
-};
-
-export const getProductId = async (itemId: string) => {
-    try {
-        const item = await db.query.products.findFirst({
-            where({ product_id }, { eq }) {
-                return eq(product_id, itemId);
-            },
-        });
-
-        return item;
     } catch (error) {
         throw error;
     }

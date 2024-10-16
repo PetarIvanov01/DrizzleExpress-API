@@ -10,7 +10,7 @@ import {
 } from '../../../database/schemas/schema_orders';
 
 import { getUserById } from './getUser';
-import { Order } from '../../schemas/orderSchema';
+import { Order } from '../../zod-schemas/orderSchema';
 import takeUniqueOrThrow from '../../utils/takeUniqueOrThrow';
 
 export async function createOrder(

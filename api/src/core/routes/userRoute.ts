@@ -20,7 +20,7 @@ import {
 } from '../controllers/profile/addressController';
 
 import validateBody from '../middlewares/zodBodyValidator';
-import { orderSchem } from '../schemas/orderSchema';
+import { orderSchem } from '../zod-schemas/orderSchema';
 
 const userRoute = Router();
 
