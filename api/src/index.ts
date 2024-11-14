@@ -9,6 +9,8 @@ import routerConfig from './config/router';
 import notFoundController from './core/controllers/errors/notFoundController';
 import checkHealthController from './core/controllers/health';
 
+import './ping-server';
+
 main();
 async function main() {
     const PORT = parseInt(process.env.PORT || '5000');
